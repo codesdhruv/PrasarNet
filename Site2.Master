@@ -1,0 +1,33 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site2.master.cs" Inherits="PrasarNet.Site2" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body class="gradbody">
+    <form id="Form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server">
+        </asp:ScriptManager>
+        <%-- <div id="hea" class="col-xs-12 col-lg-12 col-sm-12 col-md-12 text-center">
+            <asp:ContentPlaceHolder ID="headlogo" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>--%>
+        <div id="divmenu">
+            <asp:ContentPlaceHolder ID="MenuContent" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+        <div id="divcont">
+            <asp:ContentPlaceHolder ID="ContentSection" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+        <%--  <form id="form1" runat="server">--%>
+    </form>
+</body>
+</html>

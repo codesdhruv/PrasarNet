@@ -1,0 +1,52 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="PrasarNet.Site1" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Welcome to PrasarNet</title>
+    <link rel="apple-touch-icon" sizes="57x57" href="~/images/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="~/images/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="~/images/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="~/images/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="~/images/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="~/images/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="~/images/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="~/images/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="~/images/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="~/images/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="~/images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/images/favicon-16x16.png">
+    <link rel="manifest" href="~/images/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body class="gradbody"> 
+    <form id="Form1" runat="server">
+    <asp:ScriptManager ID="ScriptManager1" runat="server">
+    </asp:ScriptManager>
+    <%-- <div id="hea" class="col-xs-12 col-lg-12 col-sm-12 col-md-12 text-center">
+            <asp:ContentPlaceHolder ID="headlogo" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>--%>
+    <div id="divmenu">
+        <asp:ContentPlaceHolder ID="MenuContent" runat="server">
+        </asp:ContentPlaceHolder>
+    </div>
+    <div id="divcont">
+        <asp:ContentPlaceHolder ID="ContentSection" runat="server">
+        </asp:ContentPlaceHolder>
+    </div>
+    <%--  <form id="form1" runat="server">--%>
+    </form>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</html>

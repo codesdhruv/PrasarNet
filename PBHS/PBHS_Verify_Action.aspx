@@ -1,0 +1,1860 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="PBHS_Verify_Action.aspx.cs" Inherits="PrasarNet.PBHS.PBHS_Verify_Action" MasterPageFile="~/Site1.Master" EnableEventValidation="false" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
+<asp:Content ID="HeaderContent" runat="server" ContentPlaceHolderID="HeadContent">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <%--link of style sheet--%>
+    <link rel="stylesheet" href="../style/responsive.css" type="text/css" media="screen" />
+    <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+    <script src="http://jqueryjs.googlecode.com/files/jquery-1.2.6.min.js"></script>
+    <style type="text/css">
+        #main {
+            transition: margin-left .5s;
+            padding: 16px;
+        }
+
+        .tablecus2 {
+            background: linear-gradient(to right, #F2F3F4, #E5E8E8);
+        }
+
+        .modalBackground {
+            background-color: Black;
+            filter: alpha(opacity=40);
+            opacity: 0.4;
+        }
+
+        .modalPopup {
+            background-color: #FFFFFF;
+            width: 300px;
+            border: 3px solid #0DA9D0;
+        }
+
+            .modalPopup .header {
+                background-color: #2FBDF1;
+                height: 30px;
+                color: White;
+                line-height: 30px;
+                text-align: center;
+                font-weight: bold;
+            }
+
+            .modalPopup .body {
+                min-height: 50px;
+                line-height: 30px;
+                text-align: center;
+                font-weight: bold;
+            }
+
+            .modalPopup .footer {
+                padding: 3px;
+            }
+
+            .modalPopup .yes, .modalPopup .no {
+                height: 23px;
+                color: White;
+                line-height: 23px;
+                text-align: center;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+            .modalPopup .yes {
+                background-color: #2FBDF1;
+                border: 1px solid #0DA9D0;
+            }
+
+            .modalPopup .no {
+                background-color: #9F9F9F;
+                border: 1px solid #5C5C5C;
+            }
+
+        .grad2 {
+            /* background-color: red; /* For browsers that do not support gradients */
+            /*background-image: linear-gradient(90deg, orange, yellow);  /*Standard syntax (must be last) */
+            /*background: radial-gradient(#F9FBE7, #FFF3E0);*/
+            background: linear-gradient(to right, #CACFD2, #E67E22);
+            -webkit-radial-gradient;
+        }
+
+        .grad4 {
+            background: radial-gradient(#CACFD2, #E67E22);
+            -webkit-radial-gradient;
+        }
+
+        .grad5 {
+            background: linear-gradient(to right, #F5DA81, #D8D8D8);
+            min-height: 100px;
+        }
+
+        .cancel {
+            color: Red;
+            font-weight: bold;
+        }
+
+        .inprocess {
+            color: Green;
+            font-weight: bold;
+        }
+
+        .pending {
+            color: Blue;
+            font-weight: bold;
+        }
+
+        .gradpanel {
+            background: linear-gradient(to bottom,rgba(93, 109, 126,0), rgba(93, 109, 126,1));
+            -webkit-radial-gradient;
+        }
+
+        .gradpanelround {
+            /* background: linear-gradient(to bottom,rgba(93, 109, 126,0), rgba(93, 109, 126,1));*/
+            background: linear-gradient(to bottom,#D7DBDD, #E5E7E9);
+            -webkit-radial-gradient;
+            border-radius: 20px;
+        }
+
+        .gradheaderround {
+            background: linear-gradient(to right,#6692F3, #A3E4D7);
+            -webkit-radial-gradient;
+            border-radius: 9px;
+        }
+
+        .gradheaderroundmain {
+            background: linear-gradient(to right,#6692F3, #E8DAEF);
+            -webkit-radial-gradient;
+            border-radius: 9px;
+        }
+
+        .gradheader {
+            /*background: linear-gradient(to right,#6692F3, #A3E4D7);*/
+            background: linear-gradient(to bottom,#E9C9AC, #FFFDCD);
+            -webkit-radial-gradient;
+        }
+
+        .padtxt {
+            padding-left: 3px;
+            padding-right: 3px;
+        }
+
+        table.table-bordered {
+            border: 1px solid blue;
+            margin-top: 20px;
+        }
+
+            table.table-bordered > thead > tr > th {
+                border: 1px solid blue;
+            }
+
+            table.table-bordered > tbody > tr > td {
+                border: 1px solid blue;
+            }
+
+        .tablecus2 {
+            background: linear-gradient(to right, #F2F3F4, #E5E8E8);
+        }
+
+        .auto-style1 {
+            height: 31px;
+        }
+
+        .font2 {
+            color: #663300;
+        }
+
+        .completionList {
+            border: solid 1px #444444;
+            margin: 0px;
+            padding: 2px;
+            height: 130px;
+            overflow: auto;
+            background-color: #FDEBD0;
+            font-size: small;
+            font-weight: bold;
+        }
+
+        .listItem {
+            color: #1C1C1C;
+        }
+
+        .itemHighlighted {
+            background-color: #ffc0c0;
+        }
+
+        #block_container {
+            text-align: center;
+        }
+
+            #block_container > div {
+                display: inline-block;
+                vertical-align: middle;
+            }
+    </style>
+    <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+
+    <script type='text/javascript'>
+        function preventBack() { window.history.forward(); }
+        setTimeout("preventBack()", 0);
+        window.onunload = function () { null };
+        /* Begin jQuery */;
+        (function ($) {
+
+            $(window).scroll(function (e) {
+                if ($(window).scrollTop() >= $("header").height() + 30) {
+                    $(".sticky").addClass("fixed");
+                    $(".content").addClass("margin");
+
+                } else {
+                    $(".sticky").removeClass("fixed");
+                    $(".content").removeClass("margin");
+                }
+                e.stopPropagation();
+            });
+
+        })(jQuery);
+        function MutExChkList(chk) {
+            var chkList = chk.parentNode.parentNode.parentNode;
+            var chks = chkList.getElementsByTagName("input");
+            for (var i = 0; i < chks.length; i++) {
+                if (chks[i] != chk && chk.checked) {
+                    chks[i].checked = false;
+                }
+            }
+        }
+        var isItemSelected = false;
+        function GetID(source, eventArgs) {
+            isItemSelected = true;
+            var str = eventArgs.get_value();
+            var myarray = str.split(',');
+
+            //for (var i = 0; i < myarray.length; i++) {
+            //    console.log(myarray[i]);
+            //}
+
+            var HdnKey = myarray[0];
+            document.getElementById('<%=hdnValue.ClientID %>').value = HdnKey;
+            document.getElementById('<%=txtemailforwarded.ClientID %>').value = myarray[1];
+
+            //  alert(myarray[1]);
+
+        }
+        //Handler for textbox blur event
+        function checkItemSelected(txtInput) {
+            if (!isItemSelected) {
+                txtInput.value = "";
+                document.getElementById('<%=lblmsga.ClientID %>').innerHTML = "Only, you are allowed to choose an Forwarding Officer from the list";
+                //ContentSection_lblmsga.value = "Only choose items from the list";
+                //console.log("Only choose items from the list");
+                txtInput.focus();
+            }
+            else {
+                document.getElementById('<%=lblmsga.ClientID %>').innerHTML = "";
+            }
+        }
+        function resetItemSelected() {
+            isItemSelected = false;
+        }
+
+    </script>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="MenuContent" runat="server">
+    <div id="Div9" class="row gradhead" runat="server" style="margin: auto">
+        <div class="col-xs-3 col-lg-3 text-center" style="padding-left: 25px; padding-top: 12px; padding-bottom: 5px">
+            <%--    <asp:Image ID="img1" runat="server" class="img-responsive pull-left" Height="100%"
+                        ImageAlign="Left" ImageUrl="~/images/Emblem.png" Width="80px" />--%>
+            <asp:Image ID="Image3" runat="server" class="img-responsive pull-left  img-fluid" Width="70px" Height="90%"
+                ImageAlign="Left" ImageUrl="~/images/Emblem.png" />
+            <%--<img src="images/AIRlogo.jpg" alt="AIR LOGO" width="120px" height="107px" />--%>
+        </div>
+        <div class="col-xs-6 col-lg-6 text-center" style="padding-top: 14px; padding-bottom: 5px">
+            <div id="block_container">
+
+                <div>
+                    <asp:Label ID="Label10" runat="server" class="fontheader" ForeColor="Blue" Font-Bold="true" Text="PrasarNet"></asp:Label>
+
+                    <br />
+
+                    <asp:Label ID="Label6" runat="server" class="fontheader" ForeColor="Blue" Font-Bold="true" Text="(प्रसार नेट)"></asp:Label>
+
+                </div>
+                <div>
+                    <asp:Image ID="Image2" runat="server" class="img-responsive" Height="100%" align="center"
+                        ImageUrl="~/images/Azadi.png" Width="100px" />
+                </div>
+            </div>
+
+            <br />
+            <asp:Label ID="Label14" runat="server" class="fontheader1" ForeColor="Blue" Font-Bold="false" Text=" An Intranet for Prasar Bharati Employees"></asp:Label>
+
+        </div>
+        <div class="col-xs-3 col-lg-3 text-center" style="padding-right: 25px; padding-top: 12px; padding-bottom: 5px">
+            <asp:Image ID="Image1" runat="server" class="img-responsive pull-right" Width="123px" Height="100%"
+                ImageAlign="Right" ImageUrl="~/images/pblogo.png" />
+        </div>
+
+    </div>
+    <div id="Div10" class="row" style="margin: auto" runat="server">
+        <div id="empmenu" visible="true" runat="server" class="sticky">
+            <nav class="navbar navbar-default row-no-padding">
+                <%--nav and nav default hav a default magin and padding--%>
+                <div class="navbar-header grad3">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar1">
+                        <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                    </button>
+                    <%-- <a class="navbar-brand" href="#">WebSiteName</a>--%>
+                </div>
+                <%--    oiwqepiepqiep--%>
+
+                <div class="collapse navbar-collapse ex3 navpriorscrolling navigation grad3 wid100menu" id="myNavbar1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="../DashBoardNew.aspx" style="color: Black; font-size: 11.5px; font-weight: bold">
+                            <span class="glyphicon glyphicon-dashboard"></span>&nbsp;DashBoard</a></li>
+                        <%--<li><a href="OrdernCircular.aspx" style="color: Black; font-size: 11.5px; font-weight: bold">
+                        <span class="glyphicon glyphicon-list-alt"></span>&nbsp;Orders/Circulars</a></li>
+                    <li><a href="Policies.aspx" style="color: Black; font-size: 11.5px; font-weight: bold">
+                        <span class="glyphicon glyphicon-lock"></span>&nbsp;Policies</a>--%>
+                        <%-- <ul class="dropdown-menu">
+                                      <li><a href="#"><span style="color: #000000">Admin</span></a></li>
+                                        <li><a href="#"><span style="color: #000000">Finance</span></a></li>
+                                        <li><a href="#"><span style="color: #000000">Human Resource</span></a></li>
+                                        <li><a href="#"><span style="color: #000000">Information Technology</span></a></li>
+                                         <li><a href="#"><span style="color: #000000">Security</span></a></li>
+                                </ul>--%>
+                        <%-- </li>--%>
+
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: Black; font-size: 11.5px; font-weight: bold"><span class="glyphicon glyphicon-file"></span>
+                            &nbsp;Documents <span class="caret"></span></a>
+                            <ul class="dropdown-menu grad3">
+
+                                <li><a href="../OrdernCircular.aspx"><span style="color: #000000">Orders/Circulars</span></a></li>
+                                <li><a href="../Policies.aspx"><span style="color: #000000">Policies</span></a></li>
+
+                            </ul>
+                        </li>
+
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: Black; font-size: 11.5px; font-weight: bold"><span class="glyphicon glyphicon-wrench"></span>
+                            &nbsp;Trainings <span class="caret"></span></a>
+                            <ul class="dropdown-menu grad3">
+                                <%-- <li><a href="#"><span style="color: #000000">Orders/Circulars</a></li>--%>
+                                <li><a href="#"><span style="color: #000000">Training Materials/Videos</a></li>
+                            </ul>
+                        </li>
+                        <%--  <li><a href="#" style="color:black; font-size:11.5px;font-weight:bold"><span class="glyphicon glyphicon-tasks"></span>
+                                &nbsp;Rosters</a></li>--%>
+                        <li><a href="#" style="color: Black; font-size: 11.5px; font-weight: bold"><span
+                            class="glyphicon glyphicon-calendar"></span>&nbsp;Events and Awards</a></li>
+                        <%-- <li><a href="#" style="color:black; font-size:11.5px;font-weight:bold"><span class="glyphicon glyphicon-road"></span>&nbsp;Careers </a></li>--%>
+                        <%--<li><a href="#" style="color: Black; font-size: 11.5px; font-weight: bold"><span
+                        class="glyphicon glyphicon-globe"></span>&nbsp;Forum</a></li>--%>
+                        <%-- <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: Black;
+                        font-size: 11.5px; font-weight: bold"><span class="glyphicon glyphicon-certificate">
+                        </span>&nbsp;Welfare<span class="caret"></span></a>
+                        <ul class="dropdown-menu grad3">
+                            <li><a href="#"><span style="color: #000000">Associations</span></a></li>
+                            <li><a href="#"><span style="color: #000000">Harassments</span></a></li>
+                            <li><a href="#"><span style="color: #000000">Medical</span></a></li>
+                            <li><a href="#"><span style="color: #000000">Sports</span></a></li>
+                        </ul>
+                    </li>--%>
+                        <li><a href="../utilityDownload.aspx" style="color: Black; font-size: 11.5px; font-weight: bold">
+                            <span class="glyphicon glyphicon-download-alt"></span>&nbsp;Downloads</a></li>
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: Black; font-size: 11.5px; font-weight: bold"><span class="glyphicon glyphicon-cog"></span>
+                            &nbsp;Miscellaneous<span class="caret"></span></a>
+                            <ul class="dropdown-menu grad3">
+                                <li><a href="../RNFrequencySchedule.aspx"><span style="color: #000000">RN/Frequency Schedule</span></a></li>
+                                <%--  <li><a href="#"><span style="color: #000000">Resource Bookings</span></a></li>--%>
+                            </ul>
+                        </li>
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: Black; font-size: 11.5px; font-weight: bold"><span class="glyphicon glyphicon-user"></span>
+                            &nbsp;My Account <span class="caret"></span></a>
+                            <ul class="dropdown-menu grad3">
+                                <li><a href="../myprofile.aspx"><span style="color: #000000">My Profile</span></a></li>
+                                <li><a href="../ChangePassword.aspx"><span style="color: #000000">Change Password</span></a></li>
+                                <li><a href="../Logout.aspx" id="lgout" style="color: #000000" runat="server">LogOut</a></li>
+                                <%-- <li><a href="#" runat="server" onserverclick="logout_Click"><span style="color: #000000">LogOut</span></a></li>--%>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <div id="StationSectionMenu" visible="false" runat="server" class="sticky">
+            <nav class="navbar navbar-default row-no-padding">
+                <%--<div class="nav-mobile"><a id="nav-toggle" href="#!"><span></span></a></div>--%>
+                <div class="navbar-header grad3">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar2">
+                        <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                    </button>
+                    <%-- <a class="navbar-brand" href="#">WebSiteName</a>--%>
+                </div>
+                <%--  <li><a href="#" style="color:black; font-size:11.5px;font-weight:bold"><span class="glyphicon glyphicon-tasks"></span>
+                                &nbsp;Rosters</a></li>--%>
+                <div class="collapse navbar-collapse ex3 navpriorscrolling navigation grad3 wid100menu" id="myNavbar2">
+                    <ul class="nav navbar-nav">
+                        <li><a href="../DashBoardNew.aspx" style="color: black; font-size: 11.5px; font-weight: bold">
+                            <span class="glyphicon glyphicon-dashboard"></span>&nbsp;DashBoard</a></li>
+
+
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: Black; font-size: 11.5px; font-weight: bold"><span class="glyphicon glyphicon-file"></span>
+                            &nbsp;Documents <span class="caret"></span></a>
+                            <ul class="dropdown-menu grad3">
+
+                                <li><a href="../OrdernCircular.aspx"><span style="color: #000000">Orders/Circulars</span></a></li>
+                                <li><a href="../Policies.aspx"><span style="color: #000000">Policies</span></a></li>
+
+                            </ul>
+                        </li>
+
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: black; font-size: 11.5px; font-weight: bold"><span class="glyphicon glyphicon-wrench"></span>
+                            &nbsp;Trainings <span class="caret"></span></a>
+                            <ul class="dropdown-menu grad3">
+                                <%--<li><a href="#"><span style="color: #000000">Orders/Circulars</span></a></li>--%>
+                                <li><a href="#"><span style="color: #000000">Training Materials/Videos</span></a></li>
+                            </ul>
+                        </li>
+                        <%-- <li><a href="#" style="color:black; font-size:11.5px;font-weight:bold"><span class="glyphicon glyphicon-road"></span>&nbsp;Careers </a></li>--%>
+                        <li><a href="#" style="color: black; font-size: 11.5px; font-weight: bold"><span
+                            class="glyphicon glyphicon-calendar"></span>&nbsp;Events and Awards</a></li>
+                        <%-- <a class="navbar-brand" href="#">WebSiteName</a>--%>
+                        <%--<li><a href="#" style="color: black; font-size: 11.5px; font-weight: bold"><span
+                        class="glyphicon glyphicon-globe"></span>&nbsp;Forum</a></li>--%>
+                        <%--    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: black;
+                            font-size: 11.5px; font-weight: bold"><span class="glyphicon glyphicon-certificate">
+                            </span>&nbsp;Welfares<span class="caret"></span></a>
+                            <ul class="dropdown-menu grad3">
+                                <ul class="nav nav-list">
+                                    <li><a href="#"><span style="color: #000000">Associations</span></a></li>
+                                    <li><a href="#"><span style="color: #000000">Harassments</span></a></li>
+                                    <li><a href="#"><span style="color: #000000">Medical</span></a></li>
+                                    <li><a href="#"><span style="color: #000000">Sports</span></a></li>
+                                </ul>
+                            </ul>
+                        </li>--%>
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: black; font-size: 11.5px; font-weight: bold"><span class="glyphicon glyphicon-cog"></span>
+                            &nbsp;Miscellaneous<span class="caret"></span></a>
+                            <ul class="dropdown-menu grad3">
+                                <ul class="nav nav-list">
+                                    <li id="divstafflist" runat="server" visible="false"><a href="#"><span style="color: #000000">Staff</span></a></li>
+                                    <li><a href="../RNFrequencySchedule.aspx"><span style="color: #000000">RN/Frequency Schedule</span></a></li>
+                                    <li id="divlandrecords" runat="server" visible="false"><a href="../LandRecordEntry.aspx"><span style="color: #000000">Land Records</span></a></li>
+
+                                    <li id="divboardmeetingreport" runat="server" visible="false"><a href="../PBB_reports.aspx"><span style="color: #000000">Meeting Records</span></a></li>
+                                    <li id="divresourcebooking" runat="server" visible="false"><a href="#"><span style="color: #000000">Resource Bookings</span></a></li>
+                                </ul>
+                            </ul>
+                        </li>
+                        <li><a href="../utilityDownload.aspx" style="color: black; font-size: 11.5px; font-weight: bold">
+                            <span class="glyphicon glyphicon-download-alt"></span>&nbsp;Downloads</a></li>
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: black; font-size: 11.5px; font-weight: bold"><span class="glyphicon glyphicon-upload"></span>
+                            &nbsp;Upload <span class="caret"></span></a>
+                            <ul class="dropdown-menu grad3">
+                                <li><a href="../DocumentUpload.aspx"><span style="color: #000000">Order/Circulars</span></a></li>
+                                <%--<li><a href="#"><span style="color: #000000">Policies</span></a></li>--%>
+                                <%--<li><a href="#"><span style="color: #000000">Training Material</span></a></li>--%>
+                                <li><a href="../PhotogalleryUpload.aspx"><span style="color: #000000">Photos</span></a></li>
+                                <li id="divboradmeetingrecordsUpload" runat="server" visible="false"><a href="../DocumentUpload_pbb.aspx"><span style="color: #000000">Upload Meeting Records</span></a></li>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: black; font-size: 11.5px; font-weight: bold"><span class="glyphicon glyphicon-book"></span>
+                            &nbsp;Statements <span class="caret"></span></a>
+                            <ul class="dropdown-menu grad3">
+                                <li id="divmonthlystationreports" runat="server" visible="false"><a href="../PNET_Reports/HPTEntry.aspx"><span style="color: #000000">Monthly Station Reports</span></a></li>
+                                <li id="divmonthlystationreportsforadg" runat="server" visible="false"><a href="../PNET_Reports/MRAdmin/HPTEntry.aspx"><span style="color: #000000">Monthly Station Reports</span></a></li>
+                                <li id="divRR" runat="server" visible="true"><a href="RREntry.aspx"><span style="color: #000000">Reservation Roster</span></a></li>
+                                <%--<li><a href="#"><span style="color: #000000">Training Material</span></a></li>--%>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: black; font-size: 11.5px; font-weight: bold"><span class="glyphicon glyphicon-user"></span>
+                            &nbsp;My Account <span class="caret"></span></a>
+                            <ul class="dropdown-menu grad3">
+                                <li><a href="../myprofile.aspx"><span style="color: #000000">My Profile</span></a></li>
+                                <li><a href="../ChangePassword.aspx"><span style="color: #000000">Change Password</span></a></li>
+                                <li><a href="../Logout.aspx" id="A1" runat="server">LogOut</a></li>
+                                <%--<li><a href="#" runat="server" onserverclick="logoutstn_Click"><span style="color: #000000">LogOut</span></a></li>--%>
+                            </ul>
+                </div>
+            </nav>
+        </div>
+        <div id="AdminMenu" visible="false" runat="server" class="sticky">
+            <nav class="navbar navbar-default  row-no-padding">
+                <div class="navbar-header grad3">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar3">
+                        <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                    </button>
+                    <%-- <a class="navbar-brand" href="#">WebSiteName</a>--%>
+                </div>
+
+                <div class="collapse navbar-collapse ex3 navpriorscrolling navigation grad3 wid100menu" id="myNavbar3">
+                    <ul class="nav navbar-nav">
+                        <li><a href="../DashBoardNew.aspx" style="color: black; font-size: 11.5px; font-weight: bold">
+                            <span class="glyphicon glyphicon-dashboard"></span>&nbsp;DashBoard</a></li>
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: Black; font-size: 11.5px; font-weight: bold"><span class="glyphicon glyphicon-file"></span>
+                            &nbsp;Documents <span class="caret"></span></a>
+                            <ul class="dropdown-menu grad3">
+                                <li><a href="../OrdernCircular.aspx"><span style="color: #000000">Orders/Circulars</span></a></li>
+                                <li><a href="../Policies.aspx"><span style="color: #000000">Policies</span></a></li>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: black; font-size: 11.5px; font-weight: bold"><span class="glyphicon glyphicon-wrench"></span>
+                            &nbsp;Trainings <span class="caret"></span></a>
+                            <ul class="dropdown-menu grad3">
+                                <%--<li><a href="#"><span style="color: #000000">Orders/Circulars</span></a></li>--%>
+                                <li><a href="#"><span style="color: #000000">Training Materials/Videos</span></a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#" style="color: black; font-size: 11.5px; font-weight: bold"><span
+                            class="glyphicon glyphicon-calendar"></span>&nbsp;Events and Awards</a></li>
+
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: black; font-size: 11.5px; font-weight: bold"><span class="glyphicon glyphicon-cog"></span>
+                            &nbsp;Miscellaneous<span class="caret"></span></a>
+                            <ul class="dropdown-menu grad3">
+                                <ul class="nav nav-list">
+                                    <li><a href="../RNFrequencySchedule.aspx"><span style="color: #000000">RN/Frequency Schedule</span></a></li>
+                                    <li id="divmeetingrecordadmin" runat="server" visible="false"><a href="../PBB_reports.aspx"><span style="color: #000000">Meeting Records</span></a></li>
+                                </ul>
+                            </ul>
+                        </li>
+                        <li><a href="../utilityDownload.aspx" style="color: black; font-size: 11.5px; font-weight: bold">
+                            <span class="glyphicon glyphicon-download-alt"></span>&nbsp;Downloads</a></li>
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: black; font-size: 11.5px; font-weight: bold"><span class="glyphicon glyphicon-upload"></span>
+                            &nbsp;Upload <span class="caret"></span></a>
+                            <ul class="dropdown-menu grad3">
+                                <li><a href="../DocumentUpload.aspx"><span style="color: #000000">Order/Circulars</span></a></li>
+                                <%--<li><a href="#"><span style="color: #000000">Policies</span></a></li>--%>
+                                <%-- <li><a href="#"><span style="color: #000000">Training Material</span></a></li>--%>
+                                <li><a href="../PhotogalleryUpload.aspx"><span style="color: #000000">Photos</span></a></li>
+                                <%--<li><a href="AdminCalender.aspx"><span style="color: #000000">Calender</span></a></li>   --%>
+                            </ul>
+                        </li>
+                        <li runat="server" id="divstatementsmanagement" class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: black; font-size: 11.5px; font-weight: bold"><span class="glyphicon glyphicon-book"></span>
+                            &nbsp;Statements <span class="caret"></span></a>
+                            <ul class="dropdown-menu grad3">
+                                <li id="Li3" runat="server" visible="true"><a href="R_Roster/RR_Reports.aspx"><span style="color: #000000">Reservation Roster</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: black; font-size: 11.5px; font-weight: bold"><span class="glyphicon glyphicon-user"></span>
+                            &nbsp;My Account <span class="caret"></span></a>
+                            <ul class="dropdown-menu grad3">
+                                <%-- <li><a href="#"><span style="color: #000000">My Profile</span></a></li>--%>
+                                <li><a href="../ChangePassword.aspx"><span style="color: #000000">Change Password</span></a></li>
+                                <li><a href="../Logout.aspx" id="A2" runat="server">LogOut</a></li>
+                                <%--  <li><a href="#" runat="server" onserverclick="logoutadmin_Click"><span style="color: #000000">LogOut</span></a></li>--%>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    </span>
+</asp:Content>
+
+<asp:Content ID="Content4" ContentPlaceHolderID="ContentSection" runat="server">
+    <div class="content gradbody">
+        <div class="row" style="padding: 10px 0px 0px 0px; margin: auto">
+            <div class="col-lg-12 col-md-12 sm-12 xs-12" style="padding-left: 25px; padding-right: 35px;">
+                <asp:Label ID="Label1" class="font2 pull-right captalisefirstLetter" ForeColor="Black"
+                    Font-Bold="true" runat="server" Text=""></asp:Label>
+                <asp:Label ID="Label2" class="font pull-right" ForeColor="Black" Font-Bold="true"
+                    runat="server"><span>&nbsp;</span></asp:Label>
+                <asp:Label ID="Label15" class="font pull-right" ForeColor="Black" Font-Bold="true"
+                    runat="server" Text="Welcome"></asp:Label>
+            </div>
+        </div>
+        <div id="Div1" class="col-md-12 col-sm-12 col-lg-12" runat="server" align="right">
+            <br />
+            <asp:LinkButton ID="btnback" runat="server" CssClass="btn grad4" CausesValidation="False" BorderColor="Black" BorderStyle="Ridge" BorderWidth="2px" OnClick="btnback_Click">
+                <span aria-hidden="true" style="color: Black" class="glyphicon glyphicon-menu-left"></span>&nbsp; <span style="font-weight: bold; color: #000000">Back</span></asp:LinkButton>
+            <br />
+            <br />
+
+        </div>
+        <div class="row" style="margin: auto; padding: 30px">
+            <%--<div align="center" class=" col-md-1 col-sm-1 col-lg-1"></div>--%>
+            <div id="divgrd" visible="true" align="center" class=" col-md-12 col-sm-12 col-lg-12"
+                runat="server">
+                <div id="divfilterrec" style="text-align: left; padding: 10px" runat="server" visible="false">
+
+                    <fieldset id="Fieldset1" runat="server" style="border: medium ridge #808080;">
+                        <legend>Filter Record(s):</legend>
+                        <div class="row" style="margin: auto; padding-left: 20px; padding-right: 20px; padding-bottom: 10px">
+                            <div id="div7" visible="true" style="padding: 4px;" align="center" class=" col-md-4 col-lg-4"
+                                runat="server">
+                                <div style="border: thin groove #C0C0C0; padding: 4px;">
+
+
+                                    <asp:Label ID="Label26" runat="server" Text="Applicant's Wing: " CssClass="font2" ForeColor="Brown" Font-Bold="true"></asp:Label>
+                                    <br />
+                                    <asp:DropDownList ID="ddlwingfilter" CssClass="txtbx select" runat="server" BackColor="#D6EAF8" Width="70%" Height="30px" ValidationGroup="reg" AutoPostBack="True" OnSelectedIndexChanged="ddlwingfilter_SelectedIndexChanged"></asp:DropDownList>
+
+
+                                </div>
+                            </div>
+                            <div id="div17" visible="true" style="padding: 4px;" align="center" class=" col-md-4 col-lg-4"
+                                runat="server">
+                                <div style="border: thin groove #C0C0C0; padding: 4px;">
+                                    <asp:Label ID="Label27" runat="server" Text="Applicant's Designation: " CssClass="font2" ForeColor="Brown" Font-Bold="true"></asp:Label>
+                                    <br />
+                                    <asp:DropDownList ID="ddldesignationfilter" CssClass="txtbx select" runat="server" BackColor="#D6EAF8" Width="70%" Height="30px" ValidationGroup="reg"></asp:DropDownList>
+                                </div>
+                            </div>
+
+                            <div id="div13" visible="true" style="padding: 4px;" align="center" class=" col-md-4 col-lg-4"
+                                runat="server">
+                                <div style="border: thin groove #C0C0C0; padding: 4px;">
+                                    <asp:Label ID="Label75" runat="server" Text="Applicant's Name: " CssClass="font2" ForeColor="Brown" Font-Bold="true"></asp:Label>
+                                    <br />
+                                    <asp:TextBox ID="txtnamefilter" CssClass="txtbx select padtxt" Font-Size="Small" runat="server" Width="70%" Height="30px" BackColor="#D6EAF8" AutoComplete="Off" ValidationGroup="reg"></asp:TextBox>
+                                    <ajaxtoolkit:filteredtextboxextender id="FilteredTextBoxExtender5" runat="server"
+                                        targetcontrolid="txtnamefilter" validchars="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ">
+                                    </ajaxtoolkit:filteredtextboxextender>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin: auto; padding-left: 20px; padding-right: 20px; padding-bottom: 10px">
+                            <div id="div15" visible="true" style="padding: 4px;" align="center" class=" col-md-4 col-lg-4"
+                                runat="server">
+                                <div style="border: thin groove #C0C0C0; padding: 4px;">
+                                    <asp:Label ID="Label76" runat="server" Text="Applicant's Employee Code: " CssClass="font2" ForeColor="Brown" Font-Bold="true"></asp:Label>
+                                    <br />
+                                    <asp:TextBox ID="txtempcodefilter" CssClass="txtbx select padtxt" Font-Size="Small" runat="server" Width="70%" Height="30px" BackColor="#D6EAF8" AutoComplete="Off" ValidationGroup="reg"></asp:TextBox>
+                                    <ajaxtoolkit:filteredtextboxextender id="FilteredTextBoxExtender6" runat="server"
+                                        targetcontrolid="txtempcodefilter" validchars="0123456789">
+                                    </ajaxtoolkit:filteredtextboxextender>
+                                </div>
+                            </div>
+                            <div id="div20" visible="true" style="padding: 4px;" align="center" class=" col-md-4 col-lg-4"
+                                runat="server">
+                                <div style="border: thin groove #C0C0C0; padding: 4px;">
+                                    <asp:Label ID="Label79" runat="server" Text="Applicant's E-Mail: " CssClass="font2" ForeColor="Brown" Font-Bold="true"></asp:Label>
+                                    <br />
+                                    <asp:TextBox ID="txtemailfilter" CssClass="txtbx select padtxt" Font-Size="Small" runat="server" Width="70%" Height="30px" BackColor="#D6EAF8" AutoComplete="Off" ValidationGroup="reg"></asp:TextBox>
+
+                                </div>
+                            </div>
+                            <div id="div21" visible="true" style="padding: 4px;" align="center" class=" col-md-4 col-lg-4"
+                                runat="server">
+                                <div style="border: thin groove #C0C0C0; padding: 4px;">
+                                    <asp:Label ID="Label80" runat="server" Text="Applicant's Mobile No: " CssClass="font2" ForeColor="Brown" Font-Bold="true"></asp:Label>
+                                    <br />
+                                    <asp:TextBox ID="txtmobfilter" CssClass="txtbx select padtxt" Font-Size="Small" runat="server" Width="70%" Height="30px" BackColor="#D6EAF8" AutoComplete="Off" ValidationGroup="reg"></asp:TextBox>
+                                    <ajaxtoolkit:filteredtextboxextender id="FilteredTextBoxExtender10" runat="server"
+                                        targetcontrolid="txtmobfilter" validchars="0123456789">
+                                    </ajaxtoolkit:filteredtextboxextender>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin: auto; padding-left: 20px; padding-right: 20px; padding-bottom: 10px">
+                            <div id="div23" visible="true" style="padding: 4px;" align="center" class=" col-md-4 col-lg-4"
+                                runat="server">
+                                <div style="border: thin groove #C0C0C0; padding: 4px;">
+                                    <asp:Label ID="Label83" runat="server" Text="Date(From) " CssClass="font2" ForeColor="Brown" Font-Bold="true"></asp:Label>
+                                    <br />
+                                    <asp:TextBox ID="txtdatefrom" CssClass="txtbx select padtxt" Font-Size="Small" runat="server" Width="70%" Height="30px" BackColor="#D6EAF8" AutoComplete="Off" ValidationGroup="reg"></asp:TextBox>
+                                    <ajaxtoolkit:calendarextender id="txtdatefrom_CalendarExtender" runat="server" behaviorid="txtdatefrom_CalendarExtender"
+                                        format="dd-MM-yyyy" targetcontrolid="txtdatefrom" />
+                                    <ajaxtoolkit:filteredtextboxextender id="FilteredTextBoxExtender7" runat="server"
+                                        targetcontrolid="txtdatefrom" validchars="0123456789-">
+                                    </ajaxtoolkit:filteredtextboxextender>
+                                </div>
+                            </div>
+                            <div id="div25" visible="true" style="padding: 4px;" align="center" class=" col-md-4 col-lg-4"
+                                runat="server">
+                                <div style="border: thin groove #C0C0C0; padding: 4px;">
+                                    <asp:Label ID="Label89" runat="server" Text="Date(To) " CssClass="font2" ForeColor="Brown" Font-Bold="true"></asp:Label>
+                                    <br />
+                                    <asp:TextBox ID="txtdateto" CssClass="txtbx select padtxt" Font-Size="Small" runat="server" Width="70%" Height="30px" BackColor="#D6EAF8" AutoComplete="Off" ValidationGroup="reg"></asp:TextBox>
+                                    <ajaxtoolkit:calendarextender id="Calendarextender1" runat="server" behaviorid="txtdatefrom_CalendarExtender"
+                                        format="dd-MM-yyyy" targetcontrolid="txtdateto" />
+                                    <ajaxtoolkit:filteredtextboxextender id="FilteredTextBoxExtender8" runat="server"
+                                        targetcontrolid="txtdateto" validchars="0123456789-">
+                                    </ajaxtoolkit:filteredtextboxextender>
+                                </div>
+                            </div>
+                            <div id="div26" visible="true" style="padding: 4px;" align="center" class=" col-md-4 col-lg-4"
+                                runat="server">
+                            </div>
+                        </div>
+                        <div class="row" style="margin: auto; padding-left: 20px; padding-right: 20px; padding-bottom: 10px">
+                            <div id="div27" visible="true" style="padding: 4px;" align="center" class=" col-md-12 col-lg-12"
+                                runat="server">
+                                <asp:Button ID="btnUpdateBasic" runat="server" Style="font-size: Medium; font-weight: bolder; background-color: #b5e7a0; color: black; padding: 0.5vw; border-radius: 5px;" Text=" Filter " Visible="true" Width="200px" OnClick="btnUpdateBasic_Click" />
+
+                            </div>
+                        </div>
+                    </fieldset>
+
+                </div>
+                <%--  <div  runat="server" class="row" style="margin: auto">--%>
+                <div class="panel panel-primary">
+                    <div class="panel-heading grad3">
+                        <span style="font-weight: bold; color: Black;" class="font2">:: Transfer Application(s) and their Status ::</span>
+                    </div>
+                    <div class="panel-body grad2 table-responsive">
+                        <div id="divprisearch" style="text-align: center" runat="server" visible="true">
+                            <table width="100%">
+                                <tr>
+                                    <td align="center" style="padding: 10px">
+                                        <asp:LinkButton ID="btnprint1" runat="server" CssClass="btn" CausesValidation="False" BorderColor="Black" BorderStyle="Ridge" BorderWidth="2px" Width="200px"
+                                            BackColor="#F5B7B1" OnClick="btnprint1_Click">
+                                            <span aria-hidden="true" style="color: Black" class="glyphicon glyphicon-print"></span>
+                                            <span style="font-weight: bold; color: #000000">Print</span></asp:LinkButton>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center" style="padding: 10px">
+                                        <asp:LinkButton ID="lnkFilterrec" runat="server" CssClass="btn" CausesValidation="False" BorderColor="Black" BorderStyle="Ridge" BorderWidth="2px" Width="200px"
+                                            BackColor="#D5F5E3" OnClick="lnkFilterrec_Click">
+                                            <span aria-hidden="true" style="color: Black" class="glyphicon glyphicon glyphicon-filter"></span>
+                                            <span style="font-weight: bold; color: #000000">Filter Records</span></asp:LinkButton>
+                                    </td>
+                                </tr>
+
+                            </table>
+
+                        </div>
+                        <asp:GridView ID="grdapplications" runat="server" AutoGenerateColumns="False" EmptyDataText="..No Records Found.." HorizontalAlign="Center" BackColor="#F8F9F9"
+                            DataKeyNames="id" ShowHeaderWhenEmpty="True" ToolTip="Transfer Request Recieved" AllowPaging="true"
+                            Width="98%" OnPageIndexChanging="grdapplications_PageIndexChanging" OnRowDataBound="grdapplications_RowDataBound" OnRowCommand="grdapplications_RowCommand">
+                            <headerstyle backcolor="#0099FF" font-bold="True" forecolor="Black" horizontalalign="Center" />
+                            <columns>
+                                <asp:TemplateField HeaderText="S.No.">
+                                    <itemtemplate>
+                                        <div runat="server" align="center">
+
+                                            <asp:Label ID="lblSNo" ForeColor="Black" Font-Size="Small" runat="server" Text='<%#Container.DataItemIndex+1 %>' />
+                                            <asp:Label ID="lblserialno" ForeColor="Black" Font-Size="Small" runat="server" Text='<%#Eval("serialno") %>' Visible="false" />
+                                            <asp:Label ID="lblcertify" ForeColor="Black" Font-Size="Small" runat="server" Text='<%#Eval("isapproved") %>' Visible="false" />
+                                        </div>
+
+                                    </itemtemplate>
+
+                                    <%-- <ItemStyle Width="7%"></ItemStyle>--%>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Application No">
+                                    <itemtemplate>
+                                        <div runat="server" align="left" style="padding-top: 15px; padding-bottom: 15px; padding-left: 15px; padding-right: 15px">
+
+                                            <asp:Label ID="Label52" Font-Bold="true" ForeColor="Brown" runat="server" Font-Size="Small" Text="Application No : " class="fontingrid" />
+                                            <asp:Label ID="lblappNo" ForeColor="Black" Font-Size="Small" runat="server" Text='<%#Eval("ApplicationNo") %>' />
+                                            <br />
+                                            <br />
+                                            <asp:Label ID="Label49" Font-Bold="true" ForeColor="Brown" runat="server" Font-Size="Small" Text="Submitted On : " class="fontingrid" />
+                                            <asp:Label ID="Label50" Font-Bold="true" ForeColor="Black" runat="server" Text='<%#Eval("submittedon") %>' Font-Size="Small" class="fontingrid" />
+
+                                        </div>
+
+                                    </itemtemplate>
+
+                                    <%-- <ItemStyle Width="7%"></ItemStyle>--%>
+                                </asp:TemplateField>
+
+                                <asp:TemplateField HeaderText="Applicant Details">
+                                    <itemtemplate>
+                                        <div style="padding: 15px" runat="server" align="left">
+                                            <asp:Label ID="lblop_1" Font-Bold="true" ForeColor="Brown" runat="server" Text="Name : " class="fontingrid" Font-Size="Small" />
+                                            <asp:Label ID="lblop1" Font-Bold="true" ForeColor="Black" runat="server" Text='<%#Eval("Name_emp") %>' Font-Size="Small" />
+                                            <br />
+                                            <br />
+                                            <asp:Label ID="lblop_2" Font-Bold="true" ForeColor="Brown" runat="server" Text="Designation : " class="fontingrid" Font-Size="Small" />
+                                            <asp:Label ID="lblop2" Font-Bold="true" ForeColor="Black" runat="server" Text='<%#Eval("Emp_Designation") %>' Font-Size="Small" />
+                                            <br />
+                                            <br />
+                                            <asp:Label ID="lblop_3" Font-Bold="true" ForeColor="Brown" runat="server" Text="Station/Office : " class="fontingrid" Font-Size="Small" />
+                                            <asp:Label ID="lblop3" Font-Bold="true" ForeColor="Black" runat="server" Text='<%#Eval("emp_present_place") %>' Font-Size="Small" />
+                                            <br />
+                                            <br />
+                                            <asp:Label ID="Label13" Font-Bold="true" ForeColor="Brown" runat="server" Text="E-Mail : " class="fontingrid" Font-Size="Small" />
+                                            <asp:Label ID="Label18" Font-Bold="true" ForeColor="Black" runat="server" Text='<%#Eval("emp_Email") %>' Font-Size="Small" />
+                                            <br />
+                                            <br />
+                                            <asp:Label ID="Label19" Font-Bold="true" ForeColor="Brown" runat="server" Text="Contact No : " class="fontingrid" Font-Size="Small" />
+                                            <asp:Label ID="Label21" Font-Bold="true" ForeColor="Black" runat="server" Text='<%#Eval("emp_contactno") %>' Font-Size="Small" />
+
+
+                                        </div>
+                                    </itemtemplate>
+                                </asp:TemplateField>
+
+
+                                <asp:TemplateField HeaderText="Action Taken with Remarks">
+                                    <itemtemplate>
+                                        <div align="left" runat="server" style="padding-top: 15px; padding-bottom: 15px; padding-left: 15px; padding-right: 15px">
+                                            <asp:Label ID="lblac" Font-Bold="true" ForeColor="Brown" runat="server" Text="Action : " class="fontingrid" Font-Size="Small" />
+                                            <asp:Label ID="lblaction" runat="server" CssClass="fontingrid" ForeColor="Black"
+                                                CausesValidation="False" Text='<%#Eval("Action_taken") %>' Font-Size="Small"></asp:Label>
+                                            <asp:Label ID="lblcurrentstatus" runat="server" CssClass="fontingrid" ForeColor="Black"
+                                                CausesValidation="False" Visible="false" Text='<%#Eval("currenstatusid") %>'></asp:Label>
+                                            <br />
+                                            <br />
+                                            <asp:Label ID="lblFilefwd" Font-Bold="true" ForeColor="Brown" runat="server" Text="Document Forwarded : " Font-Size="Small" class="fontingrid" />
+                                            <asp:LinkButton ID="lblfilefwd2" Font-Bold="true" ToolTip="File Attached" CommandName="fwddownload2" ForeColor="Blue" runat="server" Text="" class="fontingrid"></asp:LinkButton>
+
+                                            <asp:Label ID="lblfilefwdupldoutput" runat="server" CssClass="fontingrid" ForeColor="Black" Font-Size="Small"
+                                                CausesValidation="False" Visible="false" Text='<%#Eval("fileupload") %>'></asp:Label>
+                                            <br />
+                                            <br />
+                                            <asp:Label ID="Label22" Font-Bold="true" ForeColor="Brown" runat="server" Font-Size="Small" Text="Email sent to : " class="fontingrid" />
+                                            <asp:Label ID="Label25" Font-Bold="true" ForeColor="Black" runat="server" Text='<%#Eval("primaryemail") %>' Font-Size="Small" class="fontingrid" />
+                                            <br />
+                                            <br />
+                                            <asp:Label ID="Label3" Font-Bold="true" ForeColor="Brown" runat="server" Font-Size="Small" Text="Copy(Email) sent to : " class="fontingrid" />
+                                            <asp:Label ID="Label4" Font-Bold="true" ForeColor="Black" runat="server" Text='<%#Eval("ccemail") %>' Font-Size="Small" class="fontingrid" />
+                                            <%--  <br />
+                                                    <br />
+                                                <asp:LinkButton ID="lnkresend_details" runat="server" CommandName="ShowPopup" Text=""></asp:LinkButton>--%>
+                                        </div>
+                                    </itemtemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Take an Action">
+                                    <itemtemplate>
+                                        <div align="center" runat="server" style="padding: 8px">
+                                            <asp:LinkButton ID="lnkaction" CommandName="takeaction" runat="server" BackColor="#99FFCC" CssClass="btn font2" ForeColor="Black"
+                                                CausesValidation="False" Text="Action">
+                                            </asp:LinkButton>
+                                            <br />
+                                            <br />
+                                            <asp:LinkButton ID="lnkapproved" CommandName="Approve" Font-Underline="true" runat="server" CssClass="fontingrid" ForeColor="Blue" Font-Bold="true" Font-Size="Small"
+                                                CausesValidation="False" Text="Approve/Certify">
+                                            </asp:LinkButton>
+
+                                            <br />
+                                            <br />
+                                            <asp:Label ID="lblcertifymsg" ForeColor="Red" Font-Bold="true" runat="server" Text="" Visible="true"></asp:Label>
+                                        </div>
+                                    </itemtemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Final Status">
+                                    <itemtemplate>
+                                        <%-- <asp:LinkButton ID="lnkstatus" CommandName="statusdetails" runat="server"
+                                            Font-Size="Smaller" class="btn btn-info" Width="80px"></asp:LinkButton>--%>
+                                        <div style="padding: 15px" align="center" runat="server">
+                                            <asp:Label ID="lnkstatus" runat="server" Enabled="false" CssClass="btn font2" ForeColor="Black" Font-Bold="true"
+                                                CausesValidation="False" Text='<%#Eval("FinalStatus") %>' ToolTip="Final Status"></asp:Label>
+
+                                            <asp:Label ID="lblbasicid" runat="server" Text='<%#Eval("basicid") %>' Visible="false"></asp:Label>
+                                            <asp:Label ID="lblfinalsubmitid" runat="server" Text='<%#Eval("finalstatusid") %>' Visible="false"></asp:Label>
+                                            <asp:Label ID="lblstatusid" runat="server" Text='<%#Eval("currenstatusid") %>' Visible="false"></asp:Label>
+                                            <br />
+                                            <br />
+                                            <asp:LinkButton ID="lnktrack" CommandName="Trackinfo" Font-Underline="true" runat="server" CssClass="fontingrid" ForeColor="Blue" Font-Bold="true" Font-Size="Small"
+                                                CausesValidation="False" Text="Track Application">
+                                            </asp:LinkButton>
+                                            <br />
+                                            <br />
+                                            <asp:LinkButton ID="lnkviewapplication" CommandName="GetaPdf" Font-Underline="true" runat="server" CssClass="fontingrid" ForeColor="Blue" Font-Bold="true" Font-Size="Small"
+                                                CausesValidation="False" Text="View/Print Application">
+                                            </asp:LinkButton>
+
+                                            <%--<br />
+                                            <br />
+                                            <asp:LinkButton ID="lnkemailagain" CommandName="ResendEmail" Font-Underline="true" runat="server" CssClass="fontingrid" ForeColor="Blue"
+                                                CausesValidation="False" Text="Re-Send an Info. to PBGS, via Email, regarding the Action Taken">
+                                            </asp:LinkButton>--%>
+                                        </div>
+                                    </itemtemplate>
+
+                                    <%--<ItemStyle Width="13%"></ItemStyle>--%>
+                                </asp:TemplateField>
+                                <%--<asp:TemplateField HeaderText="Send a Reminder">
+                                    <ItemTemplate>
+                                        <div style="padding: 15px" align="center" runat="server">
+                                            <asp:ImageButton ID="imgreminder" CommandName="sendreminder" runat="server" Height="40px" Width="40px" alt="Send a Reminder" class="img-responsive imground"
+                                                CausesValidation="False" ToolTip="Send a Reminder" ImageUrl="~/images/Reminder.png"></asp:ImageButton>
+                                        </div>
+                                        <div style="padding-left: 15px; padding-right: 15px" align="Left" runat="server">
+                                            <asp:Label ID="lbllastreminder" Font-Bold="true" ForeColor="Brown" runat="server" Text="Last Reminder sent on: " class="fontingrid" Font-Size="Small" />
+                                            <asp:Label ID="lbllastreminder2" Font-Bold="true" ForeColor="Black" runat="server" Text='<%#Eval("") %>' Font-Size="Small" />
+                                            <br />
+                                            <asp:Label ID="lbllstremRequest" Font-Bold="true" ForeColor="Brown" runat="server" Text="Last Reminder/Request: " class="fontingrid" Font-Size="Small" />
+                                            <asp:Label ID="lbllstremRequest2" Font-Bold="true" ForeColor="Black" runat="server" Text='<%#Eval("request") %>' Font-Size="Small" />
+                                        </div>
+                                        <div style="padding: 15px" align="center" runat="server">
+                                            <asp:LinkButton ID="lnkhisRem" CommandName="HistoryOfReminder" Font-Underline="true" runat="server" CssClass="fontingrid" ForeColor="Blue" Font-Bold="true" Font-Size="Small"
+                                                CausesValidation="False" Text="History Of Reminder(s)"> </asp:LinkButton>
+                                        </div>
+
+                                    </ItemTemplate>
+                                </asp:TemplateField>--%>
+                            </columns>
+                            <headerstyle backcolor="#E67E22" font-bold="True" forecolor="Black" cssclass="centerHeaderText fontingrid"
+                                wrap="True" font-size="Small" verticalalign="Middle" horizontalalign="Center"></headerstyle>
+                            <rowstyle backcolor="White" font-bold="True" height="30px" horizontalalign="Center"
+                                verticalalign="Middle" />
+                            <pagersettings position="TopAndBottom" />
+                            <pagerstyle backcolor="#E67E22" cssclass="cssPager pag" forecolor="White" font-size="Small"
+                                horizontalalign="Left" verticalalign="Middle" font-bold="True" bordercolor="Black"
+                                borderwidth="2" />
+                        </asp:GridView>
+
+                        <asp:LinkButton Text="" ID="lnkfaketrack" runat="server" />
+                        <asp:LinkButton Text="" ID="lnkfake" runat="server" />
+                        <asp:LinkButton Text="" ID="lnkfakeapprove" runat="server" />
+
+                        <ajaxtoolkit:modalpopupextender id="mpeapprove" runat="server" popupcontrolid="Panel3" targetcontrolid="lnkfakeapprove"
+                            backgroundcssclass="modalBackground" cancelcontrolid="btnapprovecncl">
+                        </ajaxtoolkit:modalpopupextender>
+                        <asp:Panel ID="Panel3" runat="server" CssClass="modalPopup scrol" Style="display: none; height: 80%;" Width="80%">
+
+                            <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                <triggers>
+                                    <asp:PostBackTrigger ControlID="btncertify" />
+                                </triggers>
+                                <contenttemplate>
+                                    <div class="header">
+                                        <asp:Label ID="Label9" Visible="true" Text="Certificate from the Head of Office" Font-Bold="true" Font-Size="Medium" runat="server" />
+                                    </div>
+                                    <div id="div4" class="body" runat="server" align="left" style="padding-top: 20px; padding-left: 20px">
+                                        <asp:Label ID="Label43" Visible="true" runat="server" Font-Bold="true" Font-Size="Large" Text="Application Reference-ID: " />
+                                        <asp:Label ID="Label46" Visible="true" runat="server" Font-Bold="true" Font-Size="Large" />
+                                    </div>
+                                    <div class="panel-body" align="left" style="padding: 20px">
+                                        <br />
+                                        <asp:Label ID="Label11" Font-Bold="true" ForeColor="Black" Font-Size="Small" runat="server" Text="The information furnished by the applicant has been verified and found to be correct. It is recommended that a PBHS Card is issued to Shri./Smt./Kumari "></asp:Label>
+                                        <asp:Label ID="lblnamecertify" Font-Bold="true" ForeColor="Black" Font-Size="Small" runat="server"></asp:Label>
+                                        <asp:Label ID="Label12" Font-Bold="true" ForeColor="Black" Font-Size="Small" runat="server" Text=". The necessary details of the applicant and his/her dependents are verified from his/her service record."></asp:Label>
+                                        <br />
+                                        <br />
+                                        <div id="divrmk_approve" runat="server">
+                                            <asp:Label ID="Label48" Font-Bold="true" ForeColor="Brown" Font-Size="Small" runat="server" Text="Application Forwarded To"></asp:Label>
+                                            <br />
+                                            <asp:DropDownList ID="ddlcerfwdto" CssClass="txtbx select" runat="server" BackColor="#D6EAF8" Width="70%" Height="30px" ValidationGroup="cer">
+                                            </asp:DropDownList>
+                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="ddlcerfwdto" ErrorMessage="* required" ValidationGroup="cer" SetFocusOnError="True"
+                                                ForeColor="Red" Display="Dynamic" Style="font-weight: 700" />
+                                            <br />
+                                            <br />
+                                            <asp:Label ID="Label16" Font-Bold="true" ForeColor="Brown" Font-Size="Small" runat="server" Text="Remarks By HOO/Controlling Officer(If Any)"></asp:Label>
+                                            <br />
+                                            <asp:TextBox ID="txtremarks_approve" runat="server" Width="90%" TextMode="MultiLine" Height="200px" Font-Size="Small" Font-Bold="true" Style="padding: 5px"></asp:TextBox>
+                                        </div>
+                                        <br />
+                                        <br />
+                                        <div id="divapprovebtn" runat="server" align="center" visible="true">
+                                            <asp:Button ID="btncertify" ValidationGroup="cer" OnClick="btncertify_Click" OnClientClick="return confirm('Once certify, you are not able make any changes. Are You Sure to certify?');" runat="server" Text="Certify" CssClass="btn" Font-Bold="true" Font-Size="Large" BackColor="#D5F5E3" ForeColor="Black" CausesValidation="true" />
+                                        </div>
+                                        <div id="divapprovemsg" runat="server" align="left" visible="true">
+                                            <asp:Label ID="lblapprovemsg" Font-Bold="true" ForeColor="Blue" Font-Size="Small" runat="server" Text=""></asp:Label>
+                                            <br />
+                                            <asp:Label ID="Label17" Font-Bold="true" ForeColor="brown" Font-Size="Small" runat="server" Text="Remarks(If Any): "></asp:Label>
+                                            <br />
+                                            <asp:Label ID="lblrmkapprove" Font-Bold="true" ForeColor="Blue" Font-Size="Small" runat="server" Text=""></asp:Label>
+                                        </div>
+                                    </div>
+
+                                    <div class="footer" align="center" style="padding-bottom: 20px">
+                                        <asp:Button ID="btnapprovecncl" runat="server" Text="X Close" CssClass="btn" Font-Bold="true" Font-Size="Large" BackColor="#E67E22" ForeColor="Black" CausesValidation="False" />
+                                    </div>
+                                </contenttemplate>
+                            </asp:UpdatePanel>
+
+                        </asp:Panel>
+                        <ajaxtoolkit:modalpopupextender id="mpe1" runat="server" popupcontrolid="pnlPopupview" targetcontrolid="lnkfake"
+                            backgroundcssclass="modalBackground" cancelcontrolid="Button3">
+                        </ajaxtoolkit:modalpopupextender>
+                        <asp:Panel ID="pnlPopupview" runat="server" CssClass="modalPopup scrol" Style="display: none; height: 95%;" Width="80%">
+                            <asp:UpdatePanel ID="UpdatePanel3" runat="server">
+                                <triggers>
+                                    <asp:PostBackTrigger ControlID="Button9" />
+                                    <asp:PostBackTrigger ControlID="grdupload" />
+                                    <asp:PostBackTrigger ControlID="grdhealth" />
+                                    <%--<asp:PostBackTrigger ControlID="grdexpprev" />
+                                <asp:PostBackTrigger ControlID="grdcerprev" />--%>
+                                </triggers>
+                                <contenttemplate>
+                                    <div class="row" style="margin: auto; padding: 20px" runat="server" id="div2">
+                                        <%--<div align="center" class=" col-md-1 col-sm-1 col-lg-1"></div>--%>
+                                        <div align="center" class=" col-lg-12 col-md-12" runat="server" id="div14">
+                                            <div class="panel-heading gradheaderround">
+                                                <span style="font-size: large; font-weight: bold; color: Black;">:: View/Print Application ::</span>
+                                            </div>
+                                            <div id="Div3" runat="server" class="panel-body table-responsive" style="min-height: 400px; margin-top: 10px; margin-bottom: 100px">
+                                                <table>
+                                                    <tr>
+                                                        <td runat="server" align="right" style="padding-right: 30px" width="30%">
+                                                            <asp:Button ID="Button9" runat="server" Style="font-size: Medium; font-weight: bolder; background-color: #AAB7B8; color: black; padding: 0.5vw; border-radius: 15px;" Text="Print" Width="160px" OnClick="Button9_Click" />
+                                                            &nbsp;
+
+                                                        </td>
+                                                        <td runat="server" align="left" style="padding-right: 30px" width="30%">
+                                                            <asp:Button ID="Button3" runat="server" Text="X Close" Style="font-size: Medium; font-weight: bolder; background-color: #AAB7B8; color: black; padding: 0.5vw; border-radius: 15px;" Width="160px" />
+                                                        </td>
+                                                    </tr>
+
+                                                </table>
+
+                                                <div class="table table-bordered tablecus2" runat="server" style="width: 97%; padding: 10px">
+                                                    <asp:Panel ID="panelprint" runat="server">
+                                                        <div id="divmsg3" runat="server" visible="false" align="center">
+                                                            <asp:Label ID="lblmsg3" runat="server" Text="" Font-Bold="true" Font-Size="Medium"></asp:Label>
+                                                        </div>
+                                                        <br />
+                                                        <table id="per" class="table table-bordered tablecus2">
+                                                            <tr runat="server" visible="true">
+                                                                <td align="center" runat="server" width="10%" class="auto-style1">
+                                                                    <asp:Label ID="Label5" CssClass="font2" runat="server" Text="1." Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="right" runat="server" style="padding-right: 30px" width="30%" class="auto-style1">
+                                                                    <asp:Label ID="lbln" CssClass="font2" runat="server" Text="Name" Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="left" runat="server" style="padding-left: 15px" class="auto-style1">
+                                                                    <asp:Label ID="lblname_bas" CssClass="font2" Font-Bold="true" ForeColor="Black" runat="server" Text=""></asp:Label>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="center" runat="server" width="10%">
+                                                                    <asp:Label ID="Label7" CssClass="font2" runat="server" Text="2." Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="right" runat="server" style="padding-right: 30px" width="30%">
+                                                                    <asp:Label ID="lbld2" CssClass="font2" runat="server" Text="Office/Department" Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="left" runat="server" style="padding-left: 15px" class="auto-style2">
+                                                                    <asp:Label ID="lbldeptt_bas" CssClass="font2" Font-Bold="true" ForeColor="Black" runat="server" Text=""></asp:Label>
+                                                                </td>
+
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="center" runat="server" width="10%">
+                                                                    <asp:Label ID="Label20" CssClass="font2" runat="server" Text="3." Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="right" runat="server" style="padding-right: 30px" width="30%">
+                                                                    <asp:Label ID="lbld" CssClass="font2" runat="server" Text="Designation" Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="left" runat="server" style="padding-left: 15px" class="auto-style2">
+                                                                    <asp:Label ID="lbldesgn_bas" CssClass="font2" Font-Bold="true" ForeColor="Black" runat="server" Text=""></asp:Label>
+                                                                </td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="center" runat="server" width="10%">
+                                                                    <asp:Label ID="Label23" CssClass="font2" runat="server" Text="4." Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="right" runat="server" style="padding-right: 30px" width="30%">
+                                                                    <asp:Label ID="Label24" CssClass="font2" runat="server" Text="Contact No" Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="left" runat="server" style="padding-left: 15px" class="auto-style2">
+                                                                    <asp:Label ID="lblcontact_bas" CssClass="font2" Font-Bold="true" ForeColor="Black" runat="server" Text=""></asp:Label>
+                                                                </td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="center" runat="server" width="10%">
+                                                                    <asp:Label ID="Label28" CssClass="font2" runat="server" Text="5." Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="right" runat="server" style="padding-right: 30px" width="30%">
+                                                                    <asp:Label ID="Label29" CssClass="font2" runat="server" Text="E-Mail" Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="left" runat="server" style="padding-left: 15px" class="auto-style2">
+                                                                    <asp:Label ID="lblemail_bas" CssClass="font2" Font-Bold="true" ForeColor="Black" runat="server" Text=""></asp:Label>
+                                                                </td>
+
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td align="center" runat="server" width="10%">
+                                                                    <asp:Label ID="Label128" CssClass="font2" runat="server" Text="6." Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="right" runat="server" style="padding-right: 30px" width="30%">
+                                                                    <asp:Label ID="Label129" CssClass="font2" runat="server" Text="Date of Super-Annuation" Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="left" runat="server" style="padding-left: 15px" class="auto-style2">
+                                                                    <asp:Label ID="lbldate_superannu_bas" CssClass="font2" Font-Bold="true" ForeColor="Black" runat="server" Text=""></asp:Label>
+                                                                </td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="center" runat="server" width="10%">
+                                                                    <asp:Label ID="Label97" CssClass="font2" runat="server" Text="7." Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="right" runat="server" style="padding-right: 30px" width="30%">
+                                                                    <asp:Label ID="Label98" CssClass="font2" runat="server" Text="Would you like to renew your card?" Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="left" runat="server" style="padding-left: 15px" class="auto-style2"><
+                                                                   <asp:Label ID="lblrenew_bas" CssClass="font2" Visible="true" Font-Bold="true" ForeColor="Black" runat="server" Text=""></asp:Label>
+                                                                    <br />
+                                                                    <asp:Label ID="Label4w" CssClass="font2" Font-Bold="true" ForeColor="Brown" runat="server" Text="Old Card No(If Applicable): "></asp:Label>
+
+                                                                    <asp:Label ID="lblrenew_no" CssClass="font2" Font-Bold="true" ForeColor="Black" runat="server" Text=""></asp:Label>
+                                                                </td>
+
+                                                            </tr>
+                                                            <tr runat="server" visible="false">
+                                                                <td align="center" runat="server" width="10%">
+                                                                    <asp:Label ID="Label31" CssClass="font2" runat="server" Text="8." Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="right" runat="server" style="padding-right: 30px" width="30%">
+                                                                    <asp:Label ID="Label32" CssClass="font2" runat="server" Text="Gazetted/Non-Gazetted" Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="left" runat="server" style="padding-left: 15px" class="auto-style2">
+
+                                                                    <asp:Label ID="lblgazetted" CssClass="font2" Font-Bold="true" ForeColor="Black" runat="server" Text=""></asp:Label>
+
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="center" runat="server" width="10%">
+                                                                    <asp:Label ID="Label90" CssClass="font2" runat="server" Text="9." Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="right" runat="server" style="padding-right: 30px" width="30%">
+                                                                    <asp:Label ID="Label91" CssClass="font2" runat="server" Text="Basic Pay" Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="left" runat="server" style="padding-left: 15px" class="auto-style2">
+
+                                                                    <asp:Label ID="lblbasiclbl" CssClass="font2" Font-Bold="true" ForeColor="Black" runat="server" Text=""></asp:Label>
+
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="center" runat="server" width="10%">
+                                                                    <asp:Label ID="lbl10" CssClass="font2" runat="server" Text="10." Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="right" runat="server" style="padding-right: 30px" width="30%">
+                                                                    <asp:Label ID="lbl10_1" CssClass="font2" runat="server" Text="Level in Pay Matrix" Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="left" runat="server" style="padding-left: 15px" class="auto-style2">
+
+                                                                    <asp:Label ID="lbllevelLBL" CssClass="font2" Font-Bold="true" ForeColor="Black" runat="server" Text=""></asp:Label>
+
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td align="center" runat="server" width="10%">
+                                                                    <asp:Label ID="Label33" CssClass="font2" runat="server" Text="11." Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="right" runat="server" style="padding-right: 30px" width="30%">
+                                                                    <asp:Label ID="Label11_1" runat="server" Text="Official Address(max 300 Characters are allowed)" class="font2" Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td style="text-align: left; padding-left: 15px" runat="server" class="auto-style2">
+
+                                                                    <asp:Label ID="lblOfficialAdd" CssClass="font2" Font-Bold="true" ForeColor="Black" runat="server" Text=""></asp:Label>
+
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td align="center" runat="server" width="10%">
+                                                                    <asp:Label ID="Label34" CssClass="font2" runat="server" Text="12." Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="right" runat="server" style="padding-right: 30px" width="30%">
+                                                                    <asp:Label ID="Label12_1" runat="server" Text="Residential Address(max 300 Characters are allowed)" class="font2" Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td style="text-align: left; padding-left: 15px" runat="server" class="auto-style2">
+
+                                                                    <asp:Label ID="lblresAdd_Lbl" CssClass="font2" Font-Bold="true" ForeColor="Black" runat="server" Text=""></asp:Label>
+
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr runat="server" visible="true">
+                                                                <td align="center" runat="server" width="10%">
+                                                                    <asp:Label ID="Label13D" CssClass="font2" runat="server" Text="12.1." Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="right" runat="server" style="padding-right: 30px" width="30%">
+                                                                    <asp:Label ID="Label13_1" CssClass="font2" runat="server" Text="Are You on Deputation" Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="left" runat="server" style="padding-left: 15px" class="auto-style2">
+
+                                                                    <asp:Label ID="lblOnDep" CssClass="font2" Font-Bold="true" ForeColor="Black" runat="server" Text=""></asp:Label>
+
+                                                                </td>
+                                                            </tr>
+                                                            <tr runat="server" visible="true">
+                                                                <td align="center" runat="server" width="10%">
+                                                                    <asp:Label ID="lbl13_2" CssClass="font2" runat="server" Text="12.2." Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="right" runat="server" style="padding-right: 30px" width="30%">
+                                                                    <asp:Label ID="lbl13_2_1" CssClass="font2" runat="server" Text="If yes, likely completion of Deputation On" Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="left" runat="server" style="padding-left: 15px" class="auto-style2">
+
+                                                                    <asp:Label ID="lbldep_LBL" CssClass="font2" Font-Bold="true" ForeColor="Black" runat="server" Text=""></asp:Label>
+
+                                                                </td>
+                                                            </tr>
+                                                            <tr runat="server" visible="true">
+                                                                <td align="center" runat="server" width="10%">
+                                                                    <asp:Label ID="lbltransferable" CssClass="font2" runat="server" Text="13." Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="right" runat="server" style="padding-right: 30px" width="30%">
+                                                                    <asp:Label ID="lbl14_t" CssClass="font2" runat="server" Text="Are Your Services are transferrable" Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="left" runat="server" style="padding-left: 15px" class="auto-style2">
+
+                                                                    <asp:Label ID="lbltransfer_lbl" CssClass="font2" Font-Bold="true" ForeColor="Black" runat="server" Text=""></asp:Label>
+
+                                                                </td>
+                                                            </tr>
+
+                                                        </table>
+                                                        <br />
+                                                        <br />
+                                                        <div class="panel-heading gradheaderround">
+                                                            <span style="font-size: large; font-weight: bold; color: Black;">:: Application Forwarded To ::</span>
+                                                        </div>
+                                                        <table id="tblfwdto" class="table table-bordered tablecus2">
+                                                            <tr runat="server" visible="true">
+                                                                <td align="center" runat="server" width="10%" class="auto-style1">
+                                                                    <asp:Label ID="Label36" CssClass="font2" runat="server" Text="14." Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="right" runat="server" style="padding-right: 30px" width="30%" class="auto-style1">
+                                                                    <asp:Label ID="Label37" CssClass="font2" runat="server" Text="Application Marked to/ Forwarded To" Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="left" runat="server" style="padding-left: 15px" class="auto-style2">
+
+                                                                    <asp:Label ID="lblapplforwared_bas" CssClass="font2" Font-Bold="true" ForeColor="Black" runat="server" Text=""></asp:Label>
+
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                        <br />
+                                                        <br />
+                                                        <div class="panel-heading gradheaderround">
+                                                            <span style="font-size: large; font-weight: bold; color: Black;">15. Dependent/Family Details</span>
+                                                        </div>
+                                                        <br />
+                                                        <br />
+                                                        <asp:GridView ID="grdhealth" DataKeyNames="id" runat="server" AutoGenerateColumns="false" ShowHeaderWhenEmpty="true"
+                                                            CssClass="Gridview" ShowFooter="false" HeaderStyle-Font-Bold="true"
+                                                            PageSize="20" AllowPaging="true" HeaderStyle-ForeColor="White" Width="99%" ToolTip="Dependent Details" OnRowCommand="grdhealth_RowCommand">
+                                                            <alternatingrowstyle horizontalalign="Center" verticalalign="Middle" />
+
+                                                            <columns>
+
+                                                                <asp:TemplateField HeaderText="S.No.">
+                                                                    <itemtemplate>
+                                                                        <div style="padding-left: 6px; padding-right: 6px;" align="center">
+                                                                            <asp:Label ID="lblrowid" runat="server" Font-Size="Medium" Text='<%#Container.DataItemIndex+1 %>' />
+                                                                        </div>
+                                                                    </itemtemplate>
+                                                                </asp:TemplateField>
+
+                                                                <asp:TemplateField HeaderText="Name of Family Member">
+
+                                                                    <itemtemplate>
+                                                                        <div style="padding: 6px" align="left">
+                                                                            <asp:Label ID="Label38" runat="server" Text="Name: " CssClass="fontingrid" ForeColor="Brown" Font-Bold="true" />
+                                                                            <asp:Label ID="lblhcName" runat="server" Text='<%#Eval("NameofMember") %>' CssClass="fontingrid" />
+                                                                            <br />
+                                                                            <br />
+                                                                            <asp:Label ID="Label39" runat="server" Text="Beneficiary Id: " CssClass="fontingrid" ForeColor="Brown" Font-Bold="true" />
+                                                                            <asp:Label ID="Label40" runat="server" Text='<%#Eval("BeneficiaryID") %>' CssClass="fontingrid" />
+
+                                                                        </div>
+                                                                    </itemtemplate>
+
+                                                                </asp:TemplateField>
+
+                                                                <asp:TemplateField HeaderText="Relationship">
+
+                                                                    <itemtemplate>
+                                                                        <div style="padding: 6px" align="center">
+                                                                            <asp:Label ID="lblrelation" runat="server" Text='<%#Eval("RelationShip") %>' CssClass="fontingrid" />
+                                                                        </div>
+                                                                    </itemtemplate>
+
+                                                                </asp:TemplateField>
+
+                                                                <asp:TemplateField HeaderText="DOB">
+
+                                                                    <itemtemplate>
+                                                                        <asp:Label ID="lbldob" runat="server" Text='<%#Eval("DOB", "{0:dd-MMM-yyyy}") %>' CssClass="fontingrid" />
+                                                                    </itemtemplate>
+
+                                                                </asp:TemplateField>
+
+                                                                <asp:TemplateField HeaderText="Blood Group">
+
+                                                                    <itemtemplate>
+                                                                        <div style="padding: 6px" align="center">
+                                                                            <asp:Label ID="lblbloodgroup" runat="server" Text='<%#Eval("BloodGrp") %>' CssClass="fontingrid" />
+                                                                        </div>
+                                                                    </itemtemplate>
+
+                                                                </asp:TemplateField>
+                                                                       <asp:TemplateField HeaderText="Occupation">
+
+                                                                <ItemTemplate>
+                                                                    <div style="padding: 6px" align="center">
+                                                                        <asp:Label ID="lblOccupation" runat="server" Text='<%#Eval("occupation") %>' CssClass="fontingrid" />
+                                                                    </div>
+                                                                </ItemTemplate>
+
+                                                            </asp:TemplateField>
+                                                                <asp:TemplateField HeaderText="Upload a Adhaar Card/Child Birth certificate">
+
+                                                                    <itemtemplate>
+                                                                        <div style="padding: 6px" align="left">
+                                                                            <%--<asp:Label ID="Label61d" runat="server" Text="Residing With Applicant: " ForeColor="Brown" Font-Bold="true" CssClass="fontingrid" />
+                                                                    <br />
+                                                                    <asp:Label ID="lblreswithapp" runat="server" Text='<%#Eval("residingwithApplicant") %>' CssClass="fontingrid" />
+                                                                    <br />
+                                                                    <br />--%>
+                                                                            <asp:ImageButton ID="imgresiding" CommandName="downloadresiding" runat="server" Height="35" Width="35" ToolTip="Download" ImageUrl="~/images/pdficon.png" />
+
+
+                                                                        </div>
+                                                                    </itemtemplate>
+
+                                                                </asp:TemplateField>
+
+                                                                <asp:TemplateField HeaderText="Photo">
+
+                                                                    <itemtemplate>
+                                                                        <div align="center" style="padding-top: 5px; padding-bottom: 5px">
+                                                                            <asp:Image ID="imgDownloadPH" runat="server" Height="100" Width="76" ToolTip="Photo" ImageUrl='<%#Eval("photo_Filename") %>' />
+                                                                            <br />
+                                                                        </div>
+                                                                    </itemtemplate>
+
+                                                                </asp:TemplateField>
+
+                                                            </columns>
+                                                            <editrowstyle horizontalalign="Center" verticalalign="Middle" />
+                                                            <footerstyle backcolor="#FBEDC4" horizontalalign="Center" verticalalign="Middle"
+                                                                font-bold="True" height="35px"></footerstyle>
+                                                            <headerstyle backcolor="#E67E22" font-bold="True" forecolor="Black" cssclass="centerHeaderText fontingrid"
+                                                                wrap="True"></headerstyle>
+                                                            <rowstyle backcolor="#EFF3FB" font-bold="True" height="30px" horizontalalign="Center"
+                                                                verticalalign="Middle" />
+                                                            <pagersettings position="TopAndBottom" />
+                                                            <pagerstyle backcolor="#E67E22" cssclass="cssPager pag" forecolor="White" font-size="Small"
+                                                                horizontalalign="Left" verticalalign="Middle" font-bold="True" bordercolor="Black"
+                                                                borderwidth="2" />
+                                                        </asp:GridView>
+                                                        <br />
+
+                                                        <table id="tblresidingAppl" class="table table-bordered tablecus2">
+                                                            <tr runat="server" visible="true">
+
+                                                                <td align="right" runat="server" style="padding-right: 30px" width="40%" class="auto-style1">
+                                                                    <asp:Label ID="Label41" CssClass="font2" runat="server" Text="16. All the persons whose names are given above are dependent upon me and are residing with me." Style="font-weight: 700; color: #000000"></asp:Label>
+                                                                </td>
+                                                                <td align="left" runat="server" style="padding-left: 15px" class="auto-style2">
+
+                                                                    <asp:Label ID="lblresidingwithme" CssClass="font2" Font-Bold="true" ForeColor="Black" runat="server" Text=""></asp:Label>
+
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                        <br />
+                                                        <br />
+                                                        <div class="panel-heading gradheaderround">
+                                                            <span style="font-size: large; font-weight: bold; color: Black;">17. Upload Applicant&#39;s Document(s)</span>
+                                                        </div>
+                                                        <br />
+                                                        <br />
+
+                                                        <asp:GridView ID="grdupload" DataKeyNames="id" runat="server" AutoGenerateColumns="false" ShowHeaderWhenEmpty="true"
+                                                            CssClass="Gridview" HeaderStyle-Font-Bold="true"
+                                                            PageSize="20" AllowPaging="true" HeaderStyle-ForeColor="White" Width="99%" ToolTip="Uploaded Documents" OnRowCommand="grdupload_RowCommand">
+                                                            <alternatingrowstyle horizontalalign="Center" verticalalign="Middle" />
+
+                                                            <columns>
+
+                                                                <asp:TemplateField HeaderText="S.No.">
+                                                                    <itemtemplate>
+                                                                        <div style="padding-left: 6px; padding-right: 6px;" align="center">
+                                                                            <asp:Label ID="Label42" runat="server" Font-Size="Medium" Text='<%#Container.DataItemIndex+1 %>' />
+                                                                        </div>
+                                                                    </itemtemplate>
+                                                                </asp:TemplateField>
+
+                                                                <asp:TemplateField HeaderText="Document Type">
+
+                                                                    <itemtemplate>
+                                                                        <div style="padding: 6px" align="center">
+                                                                            <asp:Label ID="lbldoctypei" runat="server" Text='<%#Eval("DocType") %>' CssClass="fontingrid" />
+                                                                        </div>
+                                                                    </itemtemplate>
+                                                                </asp:TemplateField>
+
+
+                                                                <asp:TemplateField HeaderText="Upload">
+                                                                    <itemtemplate>
+                                                                        <div style="padding: 6px" align="left">
+                                                                            <asp:ImageButton ID="imgdownload" Causesvalidation="False" CommandName="downloaddoc" runat="server" Height="35" Width="35" ToolTip="Download" ImageUrl="~/images/pdficon.png" />
+
+
+                                                                        </div>
+                                                                    </itemtemplate>
+                                                                </asp:TemplateField>
+                                                            </columns>
+                                                            <editrowstyle horizontalalign="Center" verticalalign="Middle" />
+                                                            <footerstyle backcolor="#FBEDC4" horizontalalign="Center" verticalalign="Middle"
+                                                                font-bold="True" height="35px"></footerstyle>
+                                                            <headerstyle backcolor="#E67E22" font-bold="True" forecolor="Black" cssclass="centerHeaderText fontingrid"
+                                                                wrap="True"></headerstyle>
+                                                            <rowstyle backcolor="#EFF3FB" font-bold="True" height="30px" horizontalalign="Center"
+                                                                verticalalign="Middle" />
+                                                            <pagersettings position="TopAndBottom" />
+                                                            <pagerstyle backcolor="#E67E22" cssclass="cssPager pag" forecolor="White" font-size="Small"
+                                                                horizontalalign="Left" verticalalign="Middle" font-bold="True" bordercolor="Black"
+                                                                borderwidth="2" />
+                                                        </asp:GridView>
+                                                        <br />
+                                                        <br />
+                                                        <div class="header">
+                                                            <asp:Label ID="Label30" Visible="true" Text="Certificate from the Head of Office" Font-Bold="true" Font-Size="Medium" runat="server" />
+                                                        </div>
+                                                        <div class="panel-body" align="left" style="padding: 20px">
+                                                            <br />
+                                                            <asp:Label ID="Label35" Font-Bold="true" ForeColor="Black" Font-Size="Small" runat="server" Text="The information furnished by the applicant has been verified and found to be correct. It is recommended that a PBHS Card is issued to Shri./Smt./Kumari "></asp:Label>
+                                                            <asp:Label ID="lblnamepopupPDF" Font-Bold="true" ForeColor="Black" Font-Size="Small" runat="server"></asp:Label>
+                                                            <asp:Label ID="Label44" Font-Bold="true" ForeColor="Black" Font-Size="Small" runat="server" Text=". The necessary details of the applicant and his/her dependents are verified from his/her service record."></asp:Label>
+                                                            <br />
+                                                            <br />
+                                                            <div id="divrmk_approve2" runat="server">
+                                                                <asp:Label ID="Label51" Font-Bold="true" ForeColor="Brown" Font-Size="Small" runat="server" Text="Application Forwarded To"></asp:Label>
+                                                                <br />
+                                                                <asp:DropDownList ID="ddlcertify_fwdto_view" CssClass="txtbx select" runat="server" BackColor="#D6EAF8" Width="70%" Height="30px" ValidationGroup="cer1">
+                                                                </asp:DropDownList>
+                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="ddlcertify_fwdto_view" ErrorMessage="* required" ValidationGroup="cer1" SetFocusOnError="True"
+                                                                    ForeColor="Red" Display="Dynamic" Style="font-weight: 700" />
+                                                                <br />
+                                                                <asp:Label ID="Label45" Font-Bold="true" ForeColor="Brown" Font-Size="Small" runat="server" Text="Remarks By HOO/Controlling Officer(If Any)"></asp:Label>
+                                                                <br />
+                                                                <asp:TextBox ID="txtrmk2" runat="server" Width="90%" TextMode="MultiLine" Height="200px" Font-Size="Small" Font-Bold="true" Style="padding: 5px"></asp:TextBox>
+                                                            </div>
+                                                            <br />
+                                                            <br />
+                                                            <div id="divapprovebtn2" runat="server" align="center" visible="true">
+                                                                <asp:Button ID="btncertify2" OnClick="btncertify2_Click" ValidationGroup="cer1" OnClientClick="return confirm('Once certify, you are not able make any changes. Are You Sure to certify?');" runat="server" Text="Certify" CssClass="btn" Font-Bold="true" Font-Size="Large" BackColor="#D5F5E3" ForeColor="Black" CausesValidation="False" />
+                                                            </div>
+                                                            <div id="divapprovemsg2" runat="server" align="left" visible="false">
+                                                                <asp:Label ID="lblapprovemsg2" Font-Bold="true" ForeColor="Blue" Font-Size="Small" runat="server" Text=""></asp:Label>
+                                                                <br />
+                                                                <asp:Label ID="Label47" Font-Bold="true" ForeColor="brown" Font-Size="Small" runat="server" Text="Remarks(If Any): "></asp:Label>
+                                                                <br />
+                                                                <asp:Label ID="lblrmkapprove2" Font-Bold="true" ForeColor="Blue" Font-Size="Small" runat="server" Text=""></asp:Label>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </asp:Panel>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </contenttemplate>
+                            </asp:UpdatePanel>
+
+                        </asp:Panel>
+
+                        <ajaxtoolkit:modalpopupextender id="mpetrack" runat="server" popupcontrolid="pnlPopuptrack" targetcontrolid="lnkfaketrack"
+                            backgroundcssclass="modalBackground" cancelcontrolid="btnClosetrack">
+                        </ajaxtoolkit:modalpopupextender>
+                        <asp:Panel ID="pnlPopuptrack" runat="server" CssClass="modalPopup scrol" Style="display: none; height: 65%;" Width="80%">
+
+                            <asp:UpdatePanel ID="UpdatePaneltrack" runat="server">
+                                <contenttemplate>
+                                    <div class="header">
+                                        <asp:Label ID="Label53" Visible="true" Text="Track Your Transfer Application" Font-Bold="true" Font-Size="Medium" runat="server" />
+                                    </div>
+                                    <div id="Div11" class="body" runat="server">
+                                        <div id="div16" class="body" runat="server" align="left" style="padding-top: 20px; padding-left: 20px">
+                                            <asp:Label ID="Label54" Visible="true" runat="server" Font-Bold="true" Font-Size="Large" Text="Application Reference-ID: " />
+                                            <asp:Label ID="Label55" Visible="true" runat="server" Font-Bold="true" Font-Size="Large" />
+                                        </div>
+                                        <div class="table-responsive" runat="server" align="center" style="padding: 20px">
+                                            <asp:GridView ID="grdtrack" runat="server" AutoGenerateColumns="False" AllowPaging="false" ToolTip="Track Application"
+                                                PageSize="10" HeaderStyle-Font-Bold="true" EmptyDataText=".. Records Not Found .."
+                                                ShowHeaderWhenEmpty="True" Width="85%" ForeColor="#333333" BorderStyle="Solid"
+                                                BorderWidth="2px">
+                                                <alternatingrowstyle backcolor="White" />
+                                                <columns>
+                                                    <asp:TemplateField HeaderText="S.No.">
+                                                        <itemtemplate>
+                                                            <asp:Label ID="Label8" ForeColor="Black" class="fontingrid" runat="server" Text='<%#Container.DataItemIndex+1 %>' />
+                                                        </itemtemplate>
+                                                        <itemstyle horizontalalign="Center" />
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Dealing Section/Station/Officer" Visible="false" >
+                                                        <itemtemplate>
+                                                            <div style="padding-left: 10px; right: 10px" align="left">
+                                                                <asp:Label ID="Label271" Font-Bold="true" ForeColor="Brown" runat="server" Text="Section/Station/Officer: " class="fontingrid" />
+                                                                <asp:Label ID="lbldealingsec" ForeColor="Black" class="fontingrid" runat="server" Text='<%#Eval("DealingOffc") %>'
+                                                                    Font-Bold="True" />
+                                                                <br />
+                                                                <asp:Label ID="Label500" Font-Bold="true" ForeColor="Brown" runat="server" Text="Recieved On: " class="fontingrid" />
+                                                                <asp:Label ID="lblreqtrack" ForeColor="Black" class="fontingrid" runat="server" Text='<%#Eval("AppSubmitOn") %>'
+                                                                    Font-Bold="True" />
+                                                            </div>
+                                                        </itemtemplate>
+                                                        <headerstyle horizontalalign="Center" />
+                                                        <itemstyle horizontalalign="Left" />
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Dealing Section/Station/Officer">
+                                                        <itemtemplate>
+                                                            <div style="padding-left: 10px; right: 10px" align="left">
+                                                                <asp:Label ID="Label57" Font-Bold="true" ForeColor="Brown" runat="server" Text="Section/Station/Officer: " class="fontingrid" />
+                                                                <asp:Label ID="Label62" ForeColor="Black" class="fontingrid" runat="server" Text='<%#Eval("DealingOffc") %>'
+                                                                    Font-Bold="True" />
+                                                                <br />
+                                                                <asp:Label ID="Label63" Font-Bold="true" ForeColor="Brown" runat="server" Text="Recieved On: " class="fontingrid" />
+                                                                <asp:Label ID="Label68" ForeColor="Black" class="fontingrid" runat="server" Text='<%#Eval("AppSubmitOn") %>'
+                                                                    Font-Bold="True" />
+                                                            </div>
+                                                        </itemtemplate>
+                                                        <headerstyle horizontalalign="Center" />
+                                                        <itemstyle horizontalalign="Left" />
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Forward/Closed with Remarks">
+                                                        <itemtemplate>
+                                                            <div style="padding-left: 10px; right: 10px; right: 10px" align="left">
+                                                                <asp:Label ID="Label3e3" ForeColor="Black" class="fontingrid" runat="server" Text='<%#Eval("remarks") %>'
+                                                                    Font-Bold="True" />
+                                                                <br />
+                                                                <br />
+                                                                <asp:Label ID="Label69" ForeColor="Black" class="fontingrid" runat="server" Text="Is File Attached: "
+                                                                    Font-Bold="True" />
+                                                                <asp:Label ID="Label70" ForeColor="Black" class="fontingrid" runat="server" Text='<%#Eval("file_") %>'
+                                                                    Font-Bold="True" />
+                                                            </div>
+                                                        </itemtemplate>
+                                                        <headerstyle horizontalalign="Center" />
+                                                        <itemstyle horizontalalign="Left" />
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Action Taken">
+                                                        <itemtemplate>
+                                                            <div style="padding-left: 10px; right: 10px; right: 10px" align="left">
+                                                                <asp:Label ID="lblactiontrachk" ForeColor="Black" class="fontingrid" runat="server" Text='<%#Eval("Status") %>'
+                                                                    Font-Bold="True" />
+                                                            </div>
+                                                        </itemtemplate>
+                                                        <headerstyle horizontalalign="Center" />
+                                                        <itemstyle horizontalalign="Left" />
+                                                    </asp:TemplateField>
+                                                </columns>
+                                                <footerstyle backcolor="#E67E22" font-bold="True" forecolor="Black" />
+                                                <headerstyle backcolor="#E67E22" font-bold="True" forecolor="Black" horizontalalign="Center"
+                                                    cssclass="centerHeaderText fontingrid" wrap="True"></headerstyle>
+                                                <pagersettings position="TopAndBottom" />
+                                                <pagerstyle backcolor="#E67E22" cssclass="cssPager pag" forecolor="White" font-size="Small"
+                                                    horizontalalign="Left" verticalalign="Middle" font-bold="True" bordercolor="Black"
+                                                    borderwidth="2" />
+                                                <rowstyle backcolor="#EFF3FB" font-bold="True" height="30px" horizontalalign="Center"
+                                                    verticalalign="Middle" />
+                                                <selectedrowstyle backcolor="#D1DDF1" font-bold="True" forecolor="#333333" />
+                                                <sortedascendingcellstyle backcolor="#F5F7FB" />
+                                                <sortedascendingheaderstyle backcolor="#6D95E1" />
+                                                <sorteddescendingcellstyle backcolor="#E9EBEF" />
+                                                <sorteddescendingheaderstyle backcolor="#4870BE" />
+                                            </asp:GridView>
+                                        </div>
+
+                                    </div>
+                                    <div class="footer" align="center" style="padding-bottom: 20px">
+                                        <asp:Button ID="btnClosetrack" runat="server" Text="X Close" CssClass="btn" Font-Bold="true" Font-Size="Large" BackColor="#E67E22" ForeColor="Black" CausesValidation="False" />
+                                    </div>
+                                </contenttemplate>
+                            </asp:UpdatePanel>
+
+                        </asp:Panel>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="divresorfor" runat="server" visible="false" align="center" style="padding: 10px;">
+            <div class="row" style="margin: auto" runat="server" id="div8">
+                <%--<div align="center" class=" col-md-1 col-sm-1 col-lg-1"></div>--%>
+                <div align="center" class=" col-md-12  col-lg-12" runat="server" id="div12">
+                    <br />
+                    <div id="div19" class="body" runat="server" align="left" style="padding-top: 20px; padding-left: 20px">
+                        <asp:Label ID="Label67" Visible="true" runat="server" Font-Bold="true" Font-Size="Large" Text="Application Reference-ID: " />
+                        <asp:Label ID="lbltrackApp" Visible="true" runat="server" Font-Bold="true" Font-Size="Large" />
+                    </div>
+                    <br />
+                    <div id="div22" class="grad2new" runat="server" style="border: medium ridge #000000; padding-top: 20px; padding-bottom: 20px; margin: auto 20px auto 20px">
+                        <div runat="server" align="center">
+                            <asp:Label runat="server" Text=":: Select an Action to Perform ::" ForeColor="Black" Font-Size="Large" Font-Bold="true" class="font2" Font-Underline="true"></asp:Label>
+                        </div>
+                        <div runat="server" align="right" style="padding-right: 30px">
+                            <asp:Button ID="Button6" runat="server" CausesValidation="False" Font-Bold="true" Font-Size="Medium" ForeColor="Black" Text="x" ValidationGroup="fwd" Width="30px" OnClick="Button6_Click" />
+                        </div>
+                        <asp:Panel ID="Panel1" runat="server">
+                            <asp:CheckBoxList ID="CheckBoxList1" runat="server" AutoPostBack="True" CellPadding="2" class="font2 chk" ForeColor="Black"
+                                CellSpacing="2" OnSelectedIndexChanged="CheckBoxList1_SelectedIndexChanged">
+                                <asp:ListItem Value="1" Enabled="True">&nbsp;&nbsp;Close this Request</asp:ListItem>
+                                <asp:ListItem Value="3" Enabled="True">&nbsp;&nbsp;Forward</asp:ListItem>
+                            </asp:CheckBoxList>
+                        </asp:Panel>
+
+                    </div>
+                    <div id="divresolvedaction" runat="server" visible="false" align="center" style="margin-top: 35px">
+                        <div id="div24" runat="server" style="border: medium ridge #000000; padding-top: 20px; padding-bottom: 20px; padding-left: 20px; padding-right: 20px; margin: auto 20px auto 20px">
+
+                            <table class="table table table-bordered grad2new def" cellpadding="5" rules="all" style="border-style: ridge; border-width: medium; z-index: 1; position: relative;">
+                                <tr class="grad3">
+                                    <td align="center" colspan="2" style="padding-top: 8px; padding-bottom: 8px" class="auto-style3">
+                                        <asp:Label ID="Label56" runat="server" Text="Close a Request" CssClass="font2" Style="font-weight: bold; color: Black;"></asp:Label>
+                                        &nbsp;
+                                    </td>
+                                </tr>
+
+                                <tr class="trnew">
+                                    <td width="40%" align="right" style="padding-right: 30px" class="auto-style3">
+                                        <asp:Label ID="Label58" runat="server" Text="Name, Mobile No, E-Mail of Applicant" ForeColor="Black" class="font"
+                                            Style="font-weight: bold;"></asp:Label>
+                                        &nbsp;
+                                    </td>
+                                    <td width="60%" align="left" style="padding-left: 15px" class="auto-style3">
+                                        <asp:Label ID="lblname_res" runat="server" CssClass="font2 " Text="" ForeColor="Black" Font-Bold="true"></asp:Label>
+
+
+                                    </td>
+                                </tr>
+                                <tr class="trnew">
+                                    <td width="40%" align="right" style="padding-right: 30px">
+                                        <asp:Label ID="Label60" runat="server" Text="Email" ForeColor="Black" class="font"
+                                            Style="font-weight: bold;"></asp:Label>
+                                        &nbsp; </td>
+                                    <td width="60%" align="left" style="padding-left: 15px">
+                                        <div style="padding: 5px">
+                                            <asp:TextBox ID="txtEmailres" runat="server" Placeholder="Primary Email" Style="padding-left: 7px" CssClass="select font2 widthofboxes1" Width="90%" Height="30px" ValidationGroup="sub1"></asp:TextBox>
+                                            &nbsp;<span style="color: black; font-size: medium;"><strong>*&nbsp; 
+                                        <br />
+                                            </strong></span>
+                                            <asp:LinkButton ID="LinkButton1" Visible="false" runat="server" Font-Underline="True" Font-Bold="true" ForeColor="Blue" Font-Size="Small" OnClick="LinkButton1_Click" CausesValidation="False">Change Email</asp:LinkButton>
+                                            &nbsp;
+                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" ControlToValidate="txtEmailres" Font-Size="Medium" Font-Bold="true" ValidationGroup="sub2" Display="Dynamic" ErrorMessage="RegularExpressionValidator"
+                                            ForeColor="Red" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*">
+                                            Not a Valid Email!!</asp:RegularExpressionValidator>
+                                            <span style="color: black; font-size: small;"><strong>
+                                                <br />
+                                                *Email of the Applicant as mentioned by him/her during the filing of Transfer Request.</strong></span>
+                                            <br />
+                                            <span style="color: red; font-size: small;"><strong>**Multiple Recipents are not allowed.</strong></span><br />
+                                            <ajaxtoolkit:filteredtextboxextender id="FilteredTextBoxExtender2" runat="server"
+                                                targetcontrolid="txtEmailres" validchars="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789@.-!#$^?=">
+                                            </ajaxtoolkit:filteredtextboxextender>
+
+                                        </div>
+                                        <div style="padding: 5px">
+                                            <asp:TextBox ID="txtccresto" runat="server" Placeholder="CC to(If Any)" Width="90%" Style="padding-left: 7px" CssClass="select font2 widthofboxes1" Height="30px"></asp:TextBox>
+                                            <br />
+                                            <span style="color: black; font-size: small;"><strong>**Multiple Recipients are allowed in CC. Here the recipients must be seperated by </strong></span>
+                                            <span style="color: black; font-size: large;"><strong>comma ( , ). </strong></span><span style="color: black; font-size: small;"><strong>No other seperators are allowed. </strong></span>
+                                            <br />
+                                            <ajaxtoolkit:autocompleteextender runat="server" id="AutoCompleteExtender3" targetcontrolid="txtccresto" completionlistitemcssclass="autoCompletePanel"
+                                                servicemethod="EmailResend" minimumprefixlength="2" enablecaching="false" completionsetcount="1"
+                                                enabled="true">
+                                            </ajaxtoolkit:autocompleteextender>
+                                            <ajaxtoolkit:filteredtextboxextender id="FilteredTextBoxExtender3" runat="server"
+                                                targetcontrolid="txtccresto" validchars="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789@.-!#$^,?=">
+                                            </ajaxtoolkit:filteredtextboxextender>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                                <tr class="trnew">
+                                    <td width="40%" align="right" style="padding-right: 30px">
+                                        <asp:Label ID="Label77" runat="server" Text="Remarks" ForeColor="Black"
+                                            class="font" Style="font-weight: bold;"></asp:Label>
+                                        &nbsp; </td>
+                                    <td width="60%" align="left" style="padding-left: 15px">
+                                        <asp:TextBox ID="txtremarksres" runat="server" class="select font2" Height="200px" Width="90%" ValidationGroup="sub2" Style="padding: 7px"
+                                            TextMode="MultiLine">
+                                        </asp:TextBox>
+                                        <br />
+                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator2" Font-Size="Medium" Font-Bold="true" ValidationGroup="sub2"
+                                            runat="server" ErrorMessage="Remarks can not exceed by 1000 Letters!!"
+                                            Style="color: #FF0000" ControlToValidate="txtremarksres" ValidationExpression="^[\s\S\d]{1,1000}$"
+                                            Display="Dynamic" class="font">
+                                        </asp:RegularExpressionValidator>
+                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator11" runat="server" ErrorMessage="Text Required!!"
+                                            ControlToValidate="txtremarksres" ForeColor="Red" SetFocusOnError="True" Font-Size="Medium" Font-Bold="true" ValidationGroup="sub2"
+                                            Display="Dynamic">
+                                        </asp:RequiredFieldValidator>
+                                        <div runat="server" id="divLOupload" style="padding-top: 10px; padding-bottom: 10px">
+                                            <asp:FileUpload ID="FileUpload1" runat="server" class="select widthofboxes1" Height="22px" Font-Size="Medium" Font-Bold="true" />
+                                            &nbsp;<span style="color: red; font-weight: bold; font-size: small"><br />
+                                                * Upload supporting document upto 3MB, If necessary</span>
+                                            <br />
+                                            <asp:Label ID="Label78" runat="server" ForeColor="Red" Font-Bold="true" Font-Size="Small" Text="** Only .pdf are allowed to upload"></asp:Label>
+                                            <asp:Label ID="lblexception" Visible="true" runat="server" Text="" CssClass="fontingrid" Font-Bold="true" ForeColor="Red"></asp:Label>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr class="trnew">
+                                    <td align="right" style="padding-right: 10px">
+                                        <asp:Button ID="btnsubmit" runat="server" Text="Submit" Font-Size="Large" class="btn select buttondocumentupload" ValidationGroup="sub2"
+                                            Style="background-color: #99FFCC; color: Black; font-weight: bold" OnClick="btnsubmit_Click" BorderColor="Black" BorderStyle="Ridge" BorderWidth="2px" Width="130px" />
+                                    </td>
+                                    <td align="left" style="padding-left: 10px">
+                                        <asp:Button ID="Button2" runat="server" Text="Close" Font-Size="Large" class="btn select gradbody buttondocumentupload"
+                                            Style="color: Black; font-weight: bold" CausesValidation="False" OnClick="Button2_Click" BorderColor="Black" BorderStyle="Ridge" BorderWidth="2px" Width="130px" />
+                                        &nbsp; </td>
+                                </tr>
+                            </table>
+                            <br />
+
+                            <asp:Label ID="lblcloseresult" runat="server" Text="" Style="font-weight: 700; font-size: small"></asp:Label>
+
+                        </div>
+                    </div>
+                    <br />
+
+                    <div id="divforwardedaction" runat="server" visible="false" align="center" style="margin-top: 35px">
+                        <div id="div212" runat="server" style="border: medium ridge #000000; padding-top: 20px; padding-bottom: 20px; padding-left: 20px; padding-right: 20px; margin: auto 20px auto 20px">
+
+                            <table class="table table table-bordered grad2new def" cellpadding="5" rules="all" style="border-style: ridge; border-width: medium; z-index: 1; position: relative;">
+                                <tr class="grad3">
+                                    <td align="center" colspan="2" style="padding-top: 8px; padding-bottom: 8px" class="auto-style3">
+                                        <asp:Label ID="Label61" runat="server" Text="Forward a Request" CssClass="font2" Style="font-weight: bold; color: Black;"></asp:Label>
+                                        &nbsp;
+                                    </td>
+                                </tr>
+
+                                <tr class="trnew">
+                                    <td width="40%" align="right" style="padding-right: 30px" class="auto-style3">
+                                        <asp:Label ID="Label59" runat="server" Text="Name & Mobile No & E-Mail of Applicant" ForeColor="Black" class="font"
+                                            Style="font-weight: bold;"></asp:Label>
+                                        &nbsp;
+                                    </td>
+                                    <td width="60%" align="left" style="padding-left: 15px" class="auto-style3">
+                                        <asp:Label ID="lblnamefwd" runat="server" CssClass="font2 " Text="" ForeColor="Black" Font-Bold="true"></asp:Label>
+                                    </td>
+                                </tr>
+                                <tr class="trnew">
+                                    <td width="40%" align="right" style="padding-right: 30px" class="auto-style3">
+                                        <asp:Label ID="Label64" runat="server" Text="Employee Code of Forwarding Officer" ForeColor="Black" class="font"
+                                            Style="font-weight: bold;"></asp:Label>
+                                        &nbsp;
+                                    </td>
+                                    <td width="60%" align="left" style="padding-left: 15px" class="auto-style3">
+                                        <asp:HiddenField ID="hdnValue" runat="server" />
+                                        <asp:Label ID="lblmsga" runat="server" Text="" ForeColor="Red" Font-Bold="true" Font-Size="Medium"></asp:Label>
+                                        <br />
+                                        <asp:TextBox ID="txtappforwarded" CssClass="txtbx select padtxt" Font-Size="Small" onfocusout="checkItemSelected(this)" onfocus="resetItemSelected()" runat="server" Width="90%" Height="30px" BackColor="#D6EAF8" AutoComplete="Off" ValidationGroup="reg"></asp:TextBox>
+                                        <ajaxtoolkit:filteredtextboxextender id="FilteredTextBoxExtender9" runat="server"
+                                            targetcontrolid="txtappforwarded" validchars="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 ()-">
+                                        </ajaxtoolkit:filteredtextboxextender>
+                                        <span class="auto-style4"><strong>*</strong></span>
+                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator17" runat="server" ControlToValidate="txtappforwarded" ErrorMessage="* required" ValidationGroup="reg" SetFocusOnError="True"
+                                            ForeColor="Red" Display="Dynamic" Style="font-weight: 700" />
+                                        <ajaxtoolkit:autocompleteextender onclientitemselected="GetID" runat="server" id="AutoCompleteExtender1" targetcontrolid="txtappforwarded"
+                                            servicemethod="SearchbyName_empcode" minimumprefixlength="2" enablecaching="false" completionsetcount="1"
+                                            enabled="true" completionlistcssclass="completionList"
+                                            completionlisthighlighteditemcssclass="itemHighlighted"
+                                            completionlistitemcssclass="listItem autoCompletePanel">
+                                        </ajaxtoolkit:autocompleteextender>
+                                        <br />
+                                        <asp:Label ID="Label96" runat="server" Text="* Enter the Employee Code, to whom the application to be forwarded. You are allowed to search the Officer by Employee Code or Employee's First Name or Last Name" Style="font-weight: 700; color: #0000FF; font-size: small"></asp:Label>
+
+                                    </td>
+                                </tr>
+
+                                <tr class="trnew">
+                                    <td width="40%" align="right" style="padding-right: 30px" class="auto-style3">
+                                        <asp:Label ID="Label65" runat="server" Text="Email" ForeColor="Black" class="font"
+                                            Style="font-weight: bold;"></asp:Label>
+                                        &nbsp; </td>
+                                    <td width="60%" align="left" style="padding-left: 15px" class="auto-style3">
+                                        <div style="padding: 5px">
+                                            <span class="auto-style1"><strong>Primary Email-Id</strong></span><br />
+                                            <asp:TextBox ID="txtemailforwarded" runat="server" Placeholder="Primay Email" AutoComplete="off" CssClass="select font2 widthofboxes1" Style="padding-left: 7px" Height="30px" Width="90%" ValidationGroup="sub1"></asp:TextBox>
+                                            <ajaxtoolkit:autocompleteextender runat="server" id="AutoCompleteExtender4" targetcontrolid="txtemailforwarded" completionlistitemcssclass="autoCompletePanel"
+                                                servicemethod="EmailResend" minimumprefixlength="2" enablecaching="false" completionsetcount="1"
+                                                enabled="true">
+                                            </ajaxtoolkit:autocompleteextender>
+                                            <br />
+                                            <asp:RegularExpressionValidator Font-Size="Medium" Font-Bold="true" ValidationGroup="sub1" ID="RegularExpressionValidator4" runat="server" ControlToValidate="txtemailforwarded"
+                                                Display="Dynamic" ErrorMessage="RegularExpressionValidator" ForeColor="Red"
+                                                ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*">
+                                                Not a Valid Email!!</asp:RegularExpressionValidator>
+                                            <br />
+                                            <span style="color: black; font-size: small;"><strong>*Email Id of Officer to whom you are forwarding this information.</strong></span><br />
+                                            <span style="color: red; font-size: small;"><strong>**Multiple Recipents are not allowed.</strong></span><br />
+                                            <ajaxtoolkit:filteredtextboxextender id="FilteredTextBoxExtender1" runat="server"
+                                                targetcontrolid="txtemailforwarded" validchars="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789@.-!#$^?=">
+                                            </ajaxtoolkit:filteredtextboxextender>
+
+                                        </div>
+                                        <div style="padding: 5px">
+                                            <span class="auto-style1"><strong>CC Email-Id</strong></span><br />
+                                            <asp:TextBox ID="txtcc" runat="server" Placeholder="CC to(If Any)" AutoComplete="off" CssClass="select font2 widthofboxes1" Style="padding-left: 7px" Height="30px" Width="90%"></asp:TextBox>
+                                            <br />
+                                            <span style="color: black; font-size: small;"><strong>**Multiple Recipients are allowed in CC. Here the recipients must be seperated by </strong></span>
+                                            <span style="color: black; font-size: large;"><strong>comma ( , ). </strong></span><span style="color: black; font-size: small;"><strong>No other seperators are allowed. </strong></span>
+                                            <br />
+                                            <ajaxtoolkit:autocompleteextender runat="server" id="AutoCompleteExtender5" targetcontrolid="txtcc" completionlistitemcssclass="autoCompletePanel"
+                                                servicemethod="EmailResend" minimumprefixlength="2" enablecaching="false" completionsetcount="1"
+                                                enabled="true">
+                                            </ajaxtoolkit:autocompleteextender>
+                                            <ajaxtoolkit:filteredtextboxextender id="FilteredTextBoxExtender4" runat="server"
+                                                targetcontrolid="txtcc" validchars="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789@.-!#$^,?=">
+                                            </ajaxtoolkit:filteredtextboxextender>
+
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="trnew">
+                                    <td width="40%" align="right" style="padding-right: 30px">
+                                        <asp:Label ID="Label66" runat="server" Text="Remarks" ForeColor="Black"
+                                            class="font" Style="font-weight: bold;"></asp:Label>
+                                        &nbsp;
+                                    </td>
+                                    <td width="60%" align="left" style="padding-left: 15px">
+                                        <asp:TextBox ID="txtremarksforward" runat="server" class="select font2" Height="200px" Width="90%" ValidationGroup="sub1" Style="padding: 7px"
+                                            TextMode="MultiLine">
+                                        </asp:TextBox>
+                                        <br />
+                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator5" runat="server" ErrorMessage="Remarks can not exceed by 1000 Letters!!"
+                                            Style="color: #FF0000" ControlToValidate="txtremarksforward" ValidationExpression="^[\s\S\d]{1,1000}$"
+                                            Display="Dynamic" class="font" Font-Size="Medium" Font-Bold="true" ValidationGroup="sub1">
+                                        </asp:RegularExpressionValidator>
+                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Text Required!!"
+                                            ControlToValidate="txtremarksforward" ForeColor="Red" SetFocusOnError="True" class="font"
+                                            Display="Dynamic" Font-Size="Medium" Font-Bold="true" ValidationGroup="sub1">
+                                        </asp:RequiredFieldValidator>
+                                        <div runat="server" id="div18" style="padding-top: 10px; padding-bottom: 10px">
+                                            <asp:FileUpload ID="FileUpload2" runat="server" class="select widthofboxes1" Height="22px" Font-Size="Medium" Font-Bold="true" />
+                                            &nbsp;<span style="color: red; font-weight: bold; font-size: small"><br />
+                                                * Upload supporting document upto 3MB, If necessary</span>
+                                            <br />
+                                            <asp:Label ID="Label92" runat="server" ForeColor="Red" Font-Bold="true" Font-Size="Small" Text="** Only .pdf are allowed to upload"></asp:Label>
+
+                                            <asp:Label ID="Label93" Visible="true" runat="server" Text="" CssClass="fontingrid" Font-Bold="true" ForeColor="Red"></asp:Label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="trnew">
+                                    <td align="right" style="padding-right: 10px">
+                                        <asp:Button ID="btnfwd" runat="server" Text="Forward" Font-Size="Large" class="btn select buttondocumentupload" ValidationGroup="sub1"
+                                            Style="background-color: #99FFCC; color: Black; font-weight: bold" OnClick="btnfwd_Click" BorderColor="Black" BorderStyle="Ridge" BorderWidth="2px" Width="130px" />
+                                    </td>
+                                    <td align="left" style="padding-left: 10px">
+                                        <asp:Button ID="Button4" runat="server" Text="Close" Font-Size="Large" class="btn select gradbody buttondocumentupload"
+                                            Style="color: Black; font-weight: bold" CausesValidation="False" OnClick="Button4_Click" BorderColor="Black" BorderStyle="Ridge" BorderWidth="2px" Width="130px" />
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                            </table>
+                            <br />
+                            <br />
+                            <asp:Label ID="lblfwdresult" runat="server" Text="" Style="font-weight: 700; font-size: small"></asp:Label>
+                        </div>
+                    </div>
+                </div>
+                <%--<div align="center" class=" col-md-1 col-sm-1 col-lg-1"></div>--%>
+            </div>
+
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+</asp:Content>
